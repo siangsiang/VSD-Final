@@ -1,59 +1,32 @@
-
-
 import torch, torchvision
 from torch.optim import optimizer
 import torch.nn as nn
 import torchvision.models as models
 import torch.optim as optim 
 
-import cv2
-from PIL import Image
 from torch.utils.data.dataset import Dataset 
 from torch.utils.data import DataLoader
-from torchvision.io import read_image
-from torchvision.transforms import transforms
-
 
 import numpy as np
 import os
 import time
 from tqdm import tqdm
 
+import pandas as pd
 
-
-
-
-class myDataset(Dataset):
-    def __init__(self, img_path, transform):
-        self.img_path = img_path
-        self.transform = transform
-        self.filelist = os.listdir(os.path.join(img_path))
+class ECGDataset(Dataset):
+    def __init__(self, datadir):
+        self.datadir = datadir
+        self.filelist = os.listdir(os.path.join(datadir))
 
     def __len__(self):
         return len(self.filelist) 
 
     def __getitem__(self, idx):
-        one_img_path = os.path.join(self.img_path, self.filelist[idx])
-        
-        # image = read_image(one_img_path)
-        # print(type(image), image.shape)
-        image = Image.open(one_img_path)
-
-        # image.show()
-        # cv2.waitKey(0)
-        #print(type(image), image)
-
-        # image = cv2.imread(one_img_path)
-        # print(type(image), image.shape)
-
-        #print(image)
+        datapath = os.path.join(self.datadir, self.filelist[idx])
+        data = pd.read_csv(datapath)
         label = int(self.filelist[idx].split('_')[0])
-        #print(image.getpixel((25,25)))
-        if self.transform:
-            image = self.transform(image)
-
-
-        return image, torch.tensor(label)
+        return data, torch.tensor(label)
 
 
 def train(model, train_loader, val_loader, num_epoch):
@@ -171,25 +144,10 @@ def main():
     num_out = 50
     num_epoch = 100
 
-    means = [0.485, 0.456, 0.406]
-    stds = [0.229, 0.224, 0.225]
-    train_transform = transforms.Compose([
-            transforms.Resize(256),
-            transforms.RandomCrop(224),
-            transforms.RandomHorizontalFlip(),
-            transforms.ToTensor(),
-            transforms.Normalize(means, stds),
-        ])
-
-    val_transform = transforms.Compose([
-            transforms.Resize(256),
-            transforms.CenterCrop(224),
-            transforms.ToTensor(),
-            transforms.Normalize(means, stds),
-        ])
-    train_set = myDataset('../data/p1_data/train_50', transform=train_transform)
-    #print(train_set.datasets)
-    val_set = myDataset('../data/p1_data/val_50', transform=val_transform)
+    train_set = ECGDataset('../DSP/result/input_double')
+    print(train_set[0])
+    exit(0)
+    val_set = ECGDataset('../data/p1_data/val_50')
 
     train_loader = DataLoader(train_set, batch_size=batch_size, shuffle=True, num_workers=4, pin_memory=True)
     val_loader = DataLoader(val_set, batch_size=batch_size, shuffle=False, num_workers=4, pin_memory=True)
