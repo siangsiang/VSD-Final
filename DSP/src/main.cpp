@@ -107,6 +107,15 @@ int main()
             }
         }
 
+        {
+            int i = 0;
+            fstream ofs(string("result/input_double/") + to_string(data_label[t]) + "_input_double_" + to_string(t) + ".dat", ios::out);
+            for (auto &dbl : data_2d_double[t]) {
+                ofs << fixed << setprecision(20) << dbl << ',';
+                i++;
+            }
+        }
+
         vector<FixedPointNumber<3, 28>> y = convolution(data_2d_fixed[t], fir_coeff_fixed);
 
         {
