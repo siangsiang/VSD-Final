@@ -88,7 +88,7 @@ int main()
     {
         {
             int i = 0;
-            fstream ofs(string("result/input/") + to_string(data_label[i]) + "_input_" + to_string(t) + ".dat", ios::out);
+            fstream ofs(string("result/input/") + to_string(data_label[t]) + "_input_" + to_string(t) + ".dat", ios::out);
             for (auto &fp : data_2d_fixed[t]) {
                 if (fp.is_overflowed() || fp.is_underflowed()) {
                     if (fp.is_overflowed()) {
@@ -111,7 +111,7 @@ int main()
 
         {
             int i = 0;
-            fstream ofs(string("result/golden/") + to_string(data_label[i]) + "_golden_" + to_string(t) + ".dat", ios::out);
+            fstream ofs(string("result/golden/") + to_string(data_label[t]) + "_golden_" + to_string(t) + ".dat", ios::out);
             for (auto &fp : y) {
                 if (fp.is_overflowed() || fp.is_underflowed()) {
                     if (fp.is_overflowed()) {
@@ -168,7 +168,7 @@ int main()
                 y_norm.emplace_back(fp);
             }
 
-            fstream ofs(string("result/golden_norm/") + to_string(data_label[i]) + "_golden_norm_" + to_string(t) + ".dat", ios::out);
+            fstream ofs(string("result/golden_norm/") + to_string(data_label[t]) + "_golden_norm_" + to_string(t) + ".dat", ios::out);
             for (auto &fp : y_norm) {
                 ofs << fp;
                 ofs << "    // " << i << ": " << fixed << setprecision(20) << fp.to_double() << endl;
