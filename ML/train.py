@@ -44,13 +44,22 @@ class ECGModel(nn.Module):
         self.fc2      = nn.Linear(9, 5, bias=False)
 
     def forward(self, x):
-        x = self.conv1d_1(x)
-        x = self.maxp1d_1(x)
-        x = self.conv1d_2(x)
-        x = self.maxp1d_2(x)
-        x = self.flatten(x)
-        x = self.fc1(x)
-        x = self.fc2(x)
+        debug_size  = False
+        shape_seq   = []
+        forward_seq = [self.conv1d_1, self.maxp1d_1, self.conv1d_2, self.maxp1d_2, self.flatten, self.fc1, self.fc2]
+
+        shape_seq.append(x.shape)
+        for l in forward_seq:
+            x = l(x)
+            if debug_size:
+                shape_seq.append(x.shape)
+
+        if debug_size:
+            print(f'input size: {shape_seq[0]}')
+            for i in range(1, len(shape_seq)):
+                print(f'after {str(forward_seq[i-1])[:str(forward_seq[i-1]).index("(")]}: {shape_seq[i]}')
+            exit(0)
+
         return x
 
 def train(model, train_loader, val_loader, num_epoch):
