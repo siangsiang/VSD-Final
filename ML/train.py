@@ -7,6 +7,8 @@ import torch.optim as optim
 from torch.utils.data.dataset import Dataset 
 from torch.utils.data import DataLoader
 
+import torch.nn.functional as F
+
 import numpy as np
 import os
 import time
@@ -24,29 +26,50 @@ class ECGDataset(Dataset):
 
     def __getitem__(self, idx):
         datapath = os.path.join(self.datadir, self.filelist[idx])
-        data = pd.read_csv(datapath)
-        label = int(self.filelist[idx].split('_')[0])
-        return data, torch.tensor(label)
+        data = pd.read_csv(datapath, header=None)
+        label = int(self.filelist[idx].split('_')[0])-1
+        # label_list = [0.0 for x in range(0, 5)]
+        # label_list[label] = 1.0
+        return torch.tensor(data.values[0], dtype=torch.float).unsqueeze(0), torch.tensor(label)
 
+class ECGModel(nn.Module):
+    def __init__(self):
+        super(ECGModel, self).__init__()
+        self.conv1d_1 = nn.Conv1d(in_channels=1, out_channels=5, kernel_size=5, stride=2)
+        self.maxp1d_1 = nn.MaxPool1d(kernel_size=2, stride=2)
+        self.conv1d_2 = nn.Conv1d(in_channels=5, out_channels=2, kernel_size=5, stride=2)
+        self.maxp1d_2 = nn.MaxPool1d(kernel_size=2, stride=2)
+        self.flatten  = nn.Flatten(start_dim=1, end_dim=-1)
+        self.fc1      = nn.Linear(42, 9, bias=False)
+        self.fc2      = nn.Linear(9, 5, bias=False)
+
+    def forward(self, x):
+        x = self.conv1d_1(x)
+        x = self.maxp1d_1(x)
+        x = self.conv1d_2(x)
+        x = self.maxp1d_2(x)
+        x = self.flatten(x)
+        x = self.fc1(x)
+        x = self.fc2(x)
+        return x
 
 def train(model, train_loader, val_loader, num_epoch):
-
+    
     start_train = time.time()
-
 
     # training setting 
     device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
-    model = model.to(device)
+    model  = model.to(device)
     optimizer = optim.SGD(model.parameters(), lr=0.01, momentum=0.9,weight_decay=1e-6, nesterov=True)
     scheduler = optim.lr_scheduler.MultiStepLR(optimizer,milestones=[20,40,60], gamma=0.1)
     criterion = nn.CrossEntropyLoss()
 
 
-    overall_loss = np.zeros(num_epoch ,dtype=np.float32)
-    overall_acc = np.zeros(num_epoch ,dtype = np.float32)
+    overall_loss = np.zeros(num_epoch, dtype=np.float32)
+    overall_acc  = np.zeros(num_epoch, dtype=np.float32)
 
-    overall_val_loss = np.zeros(num_epoch ,dtype=np.float32)
-    overall_val_acc = np.zeros(num_epoch ,dtype = np.float32)
+    overall_val_loss = np.zeros(num_epoch, dtype=np.float32)
+    overall_val_acc  = np.zeros(num_epoch, dtype=np.float32)
 
     best_acc = 0.
     for i in range(num_epoch):
@@ -64,7 +87,8 @@ def train(model, train_loader, val_loader, num_epoch):
             data = data.to(device)
             label = label.to(device)
             output = model(data) # 32 * 50
-            #print(output, output.shape)
+            # print(output, output.shape)
+            # print(label, label.shape)
 
             loss_entropy = criterion(output, label)
             pre_label = output.argmax(dim=1, keepdim=True)
@@ -141,29 +165,25 @@ def train(model, train_loader, val_loader, num_epoch):
 def main():
 
     batch_size = 32
-    num_out = 50
-    num_epoch = 100
+    num_out = 5
+    num_epoch = 10
 
-    train_set = ECGDataset('../DSP/result/input_double')
-    print(train_set[0])
-    exit(0)
-    val_set = ECGDataset('../data/p1_data/val_50')
+    train_set = ECGDataset('dataset/trainset')
+    # print(train_set[0][0])
+    # print(train_set[0][0].shape)
+    val_set = ECGDataset('dataset/valset')
+    # print(val_set[0][0])
+    # print(val_set[0][0].shape)
 
-    train_loader = DataLoader(train_set, batch_size=batch_size, shuffle=True, num_workers=4, pin_memory=True)
-    val_loader = DataLoader(val_set, batch_size=batch_size, shuffle=False, num_workers=4, pin_memory=True)
+    train_loader = DataLoader(train_set, batch_size=batch_size, shuffle=True, num_workers=16, pin_memory=True)
+    val_loader = DataLoader(val_set, batch_size=batch_size, shuffle=False, num_workers=16, pin_memory=True)
     
-    model = models.resnet50(pretrained=True)
+    model = ECGModel()
     print(model.parameters)
-    model.fc = nn.Linear(in_features=2048, out_features=num_out)
     
     train(model=model, train_loader=train_loader, val_loader=val_loader, num_epoch=num_epoch)
-
-    
     pass
 
 
 if __name__ == '__main__':
     main()
-
-
-    
