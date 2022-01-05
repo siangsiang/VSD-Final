@@ -179,7 +179,7 @@ def main():
 
     batch_size = 48*3
     num_out = 5
-    num_epoch = 0
+    num_epoch = 10
 
     train_set = ECGDataset('dataset/trainset')
     # print(train_set[0][0])
