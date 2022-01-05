@@ -10,7 +10,7 @@ using namespace std;
 template <typename T1>
 vector<T1> convolution(vector<T1> x, vector<T1> h) {
     vector<T1> y;
-    for (int i = h.size() - 1; i < x.size() - 1; ++i) {
+    for (int i = h.size() - 1; i < x.size(); ++i) {
         T1 yi = 0;
         for (int k = 0; k < h.size(); ++k) {
             if (0 <= i-k && i-k < x.size()) {
