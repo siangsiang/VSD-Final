@@ -140,6 +140,26 @@ int main()
             }
         }
 
+        {
+            int i = 0;
+            fstream ofs(string("result/golden_double/") + to_string(data_label[t]) + "_golden_double_" + to_string(t) + ".dat", ios::out);
+            for (auto &fp : y) {
+                if (fp.is_overflowed() || fp.is_underflowed()) {
+                    if (fp.is_overflowed()) {
+                        cerr << "WARNING: overflowed after convolution: [" << t << "][" << i << "]" << endl;
+                    }
+                    if (fp.is_underflowed()) {
+                        cerr << "WARNING: underflowed after convolution: [" << t << "][" << i << "]" << endl;
+                    }
+                    throw "ERROR";
+                }
+                ofs << fixed << setprecision(20) << fp.to_double();
+                i++;
+                if (i != y.size())
+                    ofs << ',';
+            }
+        }
+
         vector<FixedPointNumber<3, 28>> y_norm;
 
         {
