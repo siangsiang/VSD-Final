@@ -27,11 +27,8 @@ class ECGDataset(Dataset):
 
     def __getitem__(self, idx):
         datapath = os.path.join(self.datadir, self.filelist[idx])
-        print(datapath)
         data = pd.read_csv(datapath, header=None)
         label = int(self.filelist[idx].split('_')[0])-1
-        # label_list = [0.0 for x in range(0, 5)]
-        # label_list[label] = 1.0
         return torch.tensor(data.values[0], dtype=torch.float).unsqueeze(0), torch.tensor(label)
 
 class ECGModel(nn.Module):
@@ -42,7 +39,7 @@ class ECGModel(nn.Module):
         self.conv1d_2 = nn.Conv1d(in_channels=5, out_channels=2, kernel_size=5, stride=2)
         self.maxp1d_2 = nn.MaxPool1d(kernel_size=2, stride=2)
         self.flatten  = nn.Flatten(start_dim=1, end_dim=-1)
-        self.fc1      = nn.Linear(42, 9, bias=False)
+        self.fc1      = nn.Linear(30, 9, bias=False)
         self.fc2      = nn.Linear(9, 5, bias=False)
 
     def forward(self, x):
