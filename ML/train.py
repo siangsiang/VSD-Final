@@ -1,3 +1,4 @@
+import random
 import torch, torchvision
 from torch.optim import optimizer
 import torch.nn as nn
@@ -69,8 +70,8 @@ def train(model, train_loader, val_loader, num_epoch):
     # training setting 
     device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
     model  = model.to(device)
-    optimizer = optim.SGD(model.parameters(), lr=0.01, momentum=0.9,weight_decay=1e-6, nesterov=True)
-    scheduler = optim.lr_scheduler.MultiStepLR(optimizer,milestones=[20,40,60], gamma=0.1)
+    optimizer = optim.SGD(model.parameters(), lr=0.001, momentum=0.9, weight_decay=1e-6, nesterov=True)
+    scheduler = optim.lr_scheduler.MultiStepLR(optimizer, milestones=[20,40,60], gamma=0.1)
     criterion = nn.CrossEntropyLoss()
 
 
@@ -173,9 +174,14 @@ def train(model, train_loader, val_loader, num_epoch):
 
 def main():
 
-    batch_size = 32
+    # fix ranodm seeds for reproducibility
+    torch.manual_seed(0)
+    random.seed(0)
+    np.random.seed(0)
+
+    batch_size = 128
     num_out = 5
-    num_epoch = 10
+    num_epoch = 1000
 
     train_set = ECGDataset('dataset/trainset')
     # print(train_set[0][0])
@@ -189,8 +195,14 @@ def main():
     
     model = ECGModel()
     print(model.parameters)
-    
+
     train(model=model, train_loader=train_loader, val_loader=val_loader, num_epoch=num_epoch)
+
+    # print(model.fc1.weight)
+    # print(pd.DataFrame(model.fc1.weight.detach().numpy()))
+    for layer in model.children():
+        weights = list(layer.parameters())
+        print(weights)
     pass
 
 
