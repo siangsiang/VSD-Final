@@ -1,7 +1,7 @@
 import os
 import shutil
 
-datadir  = '../DSP/result/input_double/'
+datadir  = '../DSP/result/golden_double/'
 filelist = os.listdir(datadir)
 # print(filelist)
 cls_set = set()
@@ -37,14 +37,17 @@ for cls_filelist in cls_list:
     for i in range(0, trainset_endidx):
         src_filepath = datadir + cls_filelist[i]
         dst_filepath = 'dataset/trainset/' + cls_filelist[i]
+        print(dst_filepath)
         shutil.copy(src_filepath, dst_filepath)
 
     for i in range(trainset_endidx, valset_endidx):
         src_filepath = datadir + cls_filelist[i]
         dst_filepath = 'dataset/valset/' + cls_filelist[i]
+        print(dst_filepath)
         shutil.copy(src_filepath, dst_filepath)
 
     for i in range(valset_endidx, testset_endidx):
         src_filepath = datadir + cls_filelist[i]
         dst_filepath = 'dataset/testset/' + cls_filelist[i]
+        print(dst_filepath)
         shutil.copy(src_filepath, dst_filepath)

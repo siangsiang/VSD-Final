@@ -27,6 +27,7 @@ class ECGDataset(Dataset):
 
     def __getitem__(self, idx):
         datapath = os.path.join(self.datadir, self.filelist[idx])
+        print(datapath)
         data = pd.read_csv(datapath, header=None)
         label = int(self.filelist[idx].split('_')[0])-1
         # label_list = [0.0 for x in range(0, 5)]
