@@ -177,9 +177,9 @@ def main():
     random.seed(0)
     np.random.seed(0)
 
-    batch_size = 128
+    batch_size = 48*3
     num_out = 5
-    num_epoch = 1000
+    num_epoch = 0
 
     train_set = ECGDataset('dataset/trainset')
     # print(train_set[0][0])
@@ -188,8 +188,8 @@ def main():
     # print(val_set[0][0])
     # print(val_set[0][0].shape)
 
-    train_loader = DataLoader(train_set, batch_size=batch_size, shuffle=True, num_workers=16, pin_memory=True)
-    val_loader = DataLoader(val_set, batch_size=batch_size, shuffle=False, num_workers=16, pin_memory=True)
+    train_loader = DataLoader(train_set, batch_size=batch_size, shuffle=True, num_workers=48, pin_memory=True)
+    val_loader = DataLoader(val_set, batch_size=batch_size, shuffle=False, num_workers=48, pin_memory=True)
     
     model = ECGModel()
     print(model.parameters)
@@ -198,9 +198,25 @@ def main():
 
     # print(model.fc1.weight)
     # print(pd.DataFrame(model.fc1.weight.detach().numpy()))
+    os.makedirs('weights', exist_ok=True)
     for layer in model.children():
-        weights = list(layer.parameters())
-        print(weights)
+        if hasattr(layer, 'weight'):
+            weights = layer.weight
+        else:
+            continue
+        print(layer)
+        x = weights.detach().numpy()
+        if x.ndim == 2:
+            df = pd.DataFrame(x)
+            df.to_csv(f'weights/{str(layer)}.csv', header=None, index=None)
+            print(df)
+        elif x.ndim == 3:
+            for i in range(x.shape[0]):
+                df = pd.DataFrame(x[i])
+                df.to_csv(f'weights/{str(layer)}_{i}.csv', header=None, index=None)
+                print(df)
+
+
     pass
 
 
