@@ -118,10 +118,10 @@ void conv1d(int layer_id, vector<vector<FP>> &in, vector<vector<FP>> &out)
         for (int i = filter[0].size()-1; i < in[0].size(); i += stride) {
             FP fp(0u);
             for (int dep = 0; dep < filter.size(); ++dep) {
-                vector<FP> &filter_vec = filter[filter.size()-1-dep];
+                vector<FP> &filter_vec = filter[dep];
                 vector<FP> &in_vec = in[dep];
                 for (int k = 0; k < filter_vec.size(); ++k) {
-                    FP product = filter_vec[k] * in_vec[i-k];
+                    FP product = filter_vec[k] * in_vec[k];
                     fp = fp + product;
                     if (product.is_overflowed() || fp.is_overflowed()) {
                         cout << "overflowed!" << endl;
@@ -339,15 +339,15 @@ int inference(vector<FP> &in, const string &filename, int ground_truth)
 int main(int argc, char* argv[])
 {
     conv1d_weights_filepath.emplace_back();
-    conv1d_weights_filepath.back().emplace_back("data/weights/Conv1d(1, 5, kernel_size=(5,), stride=(2,))_0.csv");
-    conv1d_weights_filepath.back().emplace_back("data/weights/Conv1d(1, 5, kernel_size=(5,), stride=(2,))_1.csv");
-    conv1d_weights_filepath.back().emplace_back("data/weights/Conv1d(1, 5, kernel_size=(5,), stride=(2,))_2.csv");
-    conv1d_weights_filepath.back().emplace_back("data/weights/Conv1d(1, 5, kernel_size=(5,), stride=(2,))_3.csv");
-    conv1d_weights_filepath.back().emplace_back("data/weights/Conv1d(1, 5, kernel_size=(5,), stride=(2,))_4.csv");
+    conv1d_weights_filepath.back().emplace_back("data/weights/Conv1d(1, 5, kernel_size=(5,), stride=(2,), bias=False)_0.csv");
+    conv1d_weights_filepath.back().emplace_back("data/weights/Conv1d(1, 5, kernel_size=(5,), stride=(2,), bias=False)_1.csv");
+    conv1d_weights_filepath.back().emplace_back("data/weights/Conv1d(1, 5, kernel_size=(5,), stride=(2,), bias=False)_2.csv");
+    conv1d_weights_filepath.back().emplace_back("data/weights/Conv1d(1, 5, kernel_size=(5,), stride=(2,), bias=False)_3.csv");
+    conv1d_weights_filepath.back().emplace_back("data/weights/Conv1d(1, 5, kernel_size=(5,), stride=(2,), bias=False)_4.csv");
 
     conv1d_weights_filepath.emplace_back();
-    conv1d_weights_filepath.back().emplace_back("data/weights/Conv1d(5, 2, kernel_size=(5,), stride=(2,))_0.csv");
-    conv1d_weights_filepath.back().emplace_back("data/weights/Conv1d(5, 2, kernel_size=(5,), stride=(2,))_1.csv");
+    conv1d_weights_filepath.back().emplace_back("data/weights/Conv1d(5, 2, kernel_size=(5,), stride=(2,), bias=False)_0.csv");
+    conv1d_weights_filepath.back().emplace_back("data/weights/Conv1d(5, 2, kernel_size=(5,), stride=(2,), bias=False)_1.csv");
 
     fc_weights_filepath.emplace_back("data/weights/Linear(in_features=30, out_features=9, bias=False).csv");
     fc_weights_filepath.emplace_back("data/weights/Linear(in_features=9, out_features=5, bias=False).csv");
