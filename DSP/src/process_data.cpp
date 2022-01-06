@@ -17,16 +17,17 @@ int main()
 {
     CSVReader* csv_reader;
     try {
-        csv_reader = new CSVReader("data/118.csv");
+        csv_reader = new CSVReader("data/vsdfinal.csv");
     } catch (const char* msg) {
         cerr << msg << endl;
     }
 
-    fstream ofs("data/118_processed.csv", ios::out);
+    fstream ofs("data/vsdfinal_processed.csv", ios::out);
     vector<vector<double>> data_double;
     do {
         data_double.emplace_back();
     }while (csv_reader->read_double_line(data_double.back()));
+    data_double.pop_back();
     data_double.pop_back();
 
     vector<int> label;
@@ -56,7 +57,7 @@ int main()
                 gcdv = gcd(gcdv, v+0.5);
         }
     }
-    cout << gcdv << endl;
+    cout << "gcd = " << gcdv << endl;
 
     for (auto &dv: data_double) {
         for (double &v: dv) {

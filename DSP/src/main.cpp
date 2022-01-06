@@ -55,7 +55,7 @@ int main()
 
 
     try {
-        csv_reader = new CSVReader("data/118_processed.csv");
+        csv_reader = new CSVReader("data/vsdfinal_processed.csv");
     } catch (const char* msg) {
         cerr << msg << endl;
     }
@@ -84,7 +84,7 @@ int main()
         }
     }
 
-    for (int t = 0; t < 2299; ++t)
+    for (int t = 0; t < 8497; ++t)
     {
         {
             int i = 0;
@@ -181,31 +181,31 @@ int main()
                 }
             }
 
-            FixedPointNumber<3, 28> min_fixed = y[min_idx];
-            FixedPointNumber<3, 28> max_fixed = y[max_idx];
-            FixedPointNumber<3, 28> denominator = max_fixed - min_fixed;
-            for (int i = 0; i < y.size(); ++i) {
-                auto fp = y[i];
-                fp = fp - min_fixed;
-                fp = fp / denominator;
-                if (fp.is_overflowed() || fp.is_underflowed()) {
-                    if (fp.is_overflowed()) {
-                        cerr << "WARNING: overflowed after normalizing: [" << t << "][" << i << "]" << endl;
-                    }
-                    if (fp.is_underflowed()) {
-                        cerr << "WARNING: underflowed after normalizing: [" << t << "][" << i << "]" << endl;
-                    }
-                    // throw "ERROR";
-                }
-                y_norm.emplace_back(fp);
-            }
+            // FixedPointNumber<3, 28> min_fixed = y[min_idx];
+            // FixedPointNumber<3, 28> max_fixed = y[max_idx];
+            // FixedPointNumber<3, 28> denominator = max_fixed - min_fixed;
+            // for (int i = 0; i < y.size(); ++i) {
+            //     auto fp = y[i];
+            //     fp = fp - min_fixed;
+            //     fp = fp / denominator;
+            //     if (fp.is_overflowed() || fp.is_underflowed()) {
+            //         if (fp.is_overflowed()) {
+            //             cerr << "WARNING: overflowed after normalizing: [" << t << "][" << i << "]" << endl;
+            //         }
+            //         if (fp.is_underflowed()) {
+            //             cerr << "WARNING: underflowed after normalizing: [" << t << "][" << i << "]" << endl;
+            //         }
+            //         // throw "ERROR";
+            //     }
+            //     y_norm.emplace_back(fp);
+            // }
 
-            fstream ofs(string("result/golden_norm/") + to_string(data_label[t]) + "_golden_norm_" + to_string(t) + ".dat", ios::out);
-            for (auto &fp : y_norm) {
-                ofs << fp;
-                ofs << "    // " << i << ": " << fixed << setprecision(20) << fp.to_double() << endl;
-                i++;
-            }
+            // fstream ofs(string("result/golden_norm/") + to_string(data_label[t]) + "_golden_norm_" + to_string(t) + ".dat", ios::out);
+            // for (auto &fp : y_norm) {
+            //     ofs << fp;
+            //     ofs << "    // " << i << ": " << fixed << setprecision(20) << fp.to_double() << endl;
+            //     i++;
+            // }
         }
     }
     return 0;

@@ -366,7 +366,7 @@ int main(int argc, char* argv[])
 
         read_ecg_input(filepath, input_fp);
 
-        int ground_truth = (int)(filename[0] - '0') - 1;
+        int ground_truth = (int)(filename[0] - '0');
 
         int clz = inference(input_fp, filename, ground_truth);
         

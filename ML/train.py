@@ -28,7 +28,7 @@ class ECGDataset(Dataset):
     def __getitem__(self, idx):
         datapath = os.path.join(self.datadir, self.filelist[idx])
         data = pd.read_csv(datapath, header=None)
-        label = int(self.filelist[idx].split('_')[0])-1
+        label = int(self.filelist[idx].split('_')[0])
         return torch.tensor(data.values[0], dtype=torch.float).unsqueeze(0), torch.tensor(label)
 
 class ECGModel(nn.Module):
