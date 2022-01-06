@@ -63,6 +63,7 @@ bool read_conv1d_weights(const string &filepath, vector<vector<FP>> &dst)
         csv_reader = new CSVReader(filepath);
     } catch (const char* msg) {
         cerr << msg << endl;
+        return false;
     }
 
     vector<vector<uint32_t>> csv_data;
@@ -117,11 +118,14 @@ void conv1d(int layer_id, vector<vector<FP>> &in, vector<vector<FP>> &out)
         for (int i = filter[0].size()-1; i < in[0].size(); i += stride) {
             FP fp(0u);
             for (int dep = 0; dep < filter.size(); ++dep) {
-                vector<FP> &filter_vec = filter[dep];
+                vector<FP> &filter_vec = filter[filter.size()-1-dep];
                 vector<FP> &in_vec = in[dep];
                 for (int k = 0; k < filter_vec.size(); ++k) {
                     FP product = filter_vec[k] * in_vec[i-k];
                     fp = fp + product;
+                    if (product.is_overflowed() || fp.is_overflowed()) {
+                        cout << "overflowed!" << endl;
+                    }
                 }
             }
             out[f].emplace_back(fp);
@@ -139,7 +143,7 @@ void maxpool1d(const vector<vector<FP>> &in, vector<vector<FP>> &out)
     for (int i = 0; i < in.size(); ++i) {
         for (int j = 0; j < (in[0].size()/2)*2; j += stride) {
             FP maxfp;
-            if (in[i][j].get_value() > in[i][j+1].get_value()) {
+            if (in[i][j].to_double() > in[i][j+1].to_double()) {
                 maxfp = in[i][j];
             }
             else {
@@ -168,6 +172,7 @@ bool read_fc_weights(const string &filepath, vector<vector<FP>> &dst)
         csv_reader = new CSVReader(filepath);
     } catch (const char* msg) {
         cerr << msg << endl;
+        return false;
     }
 
     vector<vector<uint32_t>> csv_data;
@@ -201,6 +206,9 @@ void mat_mul(vector<FP> &x, vector<vector<FP>> &mat, vector<FP> &y)
         for (int col = 0; col < mat[0].size(); ++col) {
             FP product = x[col] * mat[row][col];
             y[row] = y[row] + product;
+            if (product.is_overflowed() || y[row].is_overflowed()) {
+                cout << "overflowed!" << endl;
+            }
         }
     }
 }
@@ -222,6 +230,10 @@ void record_golden(vector<FP> &v, const string &filepath)
 {
     fstream ofs(filepath, ios::out);
     for (auto &fp : v) {
+        if (fp.is_overflowed())
+        {
+            cout << "Overflowed! " << filepath << endl;
+        }
         ofs << fp << "  // " << fp.to_double() << endl;
     }
 }
@@ -231,6 +243,10 @@ void record_golden(vector<vector<FP>> &m, const string &filepath)
     fstream ofs(filepath, ios::out);
     for (auto &v : m) {
         for (auto &fp : v) {
+            if (fp.is_overflowed())
+            {
+                cout << "Overflowed! " << filepath << endl;
+            }
             ofs << fp << "  // " << fp.to_double() << endl;
         }
         ofs << endl;
@@ -295,7 +311,7 @@ int inference(vector<FP> &in, const string &filename, int ground_truth)
     record_golden(fc_1_out, string("result/fc_1_golden/")+filename);
     ofs << "fc_1 end" << endl << endl;
 
-    double max_v = fc_0_out[0].to_double();
+    double max_v = fc_1_out[0].to_double();
     int max_idx = 0;
     for (int i = 1; i < fc_1_out.size(); ++i) {
         FP &fp = fc_1_out[i];
@@ -350,13 +366,14 @@ int main(int argc, char* argv[])
 
         read_ecg_input(filepath, input_fp);
 
-        int ground_truth = (int)(filename[0] - '0');
+        int ground_truth = (int)(filename[0] - '0') - 1;
 
         int clz = inference(input_fp, filename, ground_truth);
         
         total_cnt++;
         if (clz == ground_truth)
             pass_cnt++;
+        cout << clz << ' ' << ground_truth << endl;
     }
 
     cout << "Pass: " << pass_cnt << endl;

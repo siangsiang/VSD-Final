@@ -28,6 +28,6 @@ fc_1 start
 fc_1_out.shape = (5)
 fc_1 end
 
-Groundtruth is: 3
-Classified as: 1
-Fail
+Groundtruth is: 2
+Classified as: 2
+Pass
