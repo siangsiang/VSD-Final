@@ -35,17 +35,21 @@ class ECGModel(nn.Module):
     def __init__(self):
         super(ECGModel, self).__init__()
         self.conv1d_1 = nn.Conv1d(in_channels=1, out_channels=5, kernel_size=5, stride=2, bias=False)
+        self.relu_1   = nn.ReLU();
         self.maxp1d_1 = nn.MaxPool1d(kernel_size=2, stride=2)
         self.conv1d_2 = nn.Conv1d(in_channels=5, out_channels=2, kernel_size=5, stride=2, bias=False)
+        self.relu_2   = nn.ReLU();
         self.maxp1d_2 = nn.MaxPool1d(kernel_size=2, stride=2)
         self.flatten  = nn.Flatten(start_dim=1, end_dim=-1)
         self.fc1      = nn.Linear(30, 9, bias=False)
+        self.relu_3   = nn.ReLU();
         self.fc2      = nn.Linear(9, 5, bias=False)
+        self.softmax  = nn.Softmax();
 
     def forward(self, x):
         debug_size  = False
         shape_seq   = []
-        forward_seq = [self.conv1d_1, self.maxp1d_1, self.conv1d_2, self.maxp1d_2, self.flatten, self.fc1, self.fc2]
+        forward_seq = [self.conv1d_1, self.relu_1, self.maxp1d_1, self.conv1d_2, self.relu_2, self.maxp1d_2, self.flatten, self.fc1, self.relu_3, self.fc2, self.softmax]
 
         shape_seq.append(x.shape)
         for l in forward_seq:
@@ -179,7 +183,7 @@ def main():
 
     batch_size = 48*3
     num_out = 5
-    num_epoch = 10
+    num_epoch = 30
 
     train_set = ECGDataset('dataset/trainset')
     # print(train_set[0][0])

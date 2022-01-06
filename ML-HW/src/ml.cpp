@@ -220,6 +220,31 @@ void fc(int layer_id, vector<FP> &in, vector<FP> &out)
     mat_mul(in, weights, out);
 }
 
+void relu(vector<FP> &in, vector<FP> &out)
+{
+    out.clear();
+    for (FP &fp : in) {
+        if (fp.to_double() <= 0)
+            out.emplace_back(FP(0u));
+        else
+            out.emplace_back(fp);
+    }
+}
+
+void relu(vector<vector<FP>> &in, vector<vector<FP>> &out)
+{
+    out.clear();
+    for (auto &v : in) {
+        out.emplace_back();
+        for (FP &fp : v) {
+            if (fp.to_double() <= 0)
+                out.back().emplace_back(FP(0u));
+            else
+                out.back().emplace_back(fp);
+        }
+    }
+}
+
 void record_golden(int clz, const string &filepath)
 {
     fstream ofs(filepath, ios::out);
