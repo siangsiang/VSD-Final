@@ -77,7 +77,7 @@ public:
         return true;
     }
 
-    inline bool read_uint(unsigned int &dst)
+    inline bool read_hex(unsigned int &dst)
     {
         if (line_stream.eof())
         {
@@ -86,11 +86,11 @@ public:
         }
         char buf[32];
         line_stream.getline(buf, 32, ',');
-        dst = std::atoi(buf);
+        sscanf(buf, "%x", &dst);
         return true;
     }
 
-    inline bool read_uint_line(std::vector<unsigned int> &dst)
+    inline bool read_hex_line(std::vector<unsigned int> &dst)
     {
         if (line_stream.eof())
         {
@@ -101,7 +101,9 @@ public:
         char buf[32];
         while (!line_stream.eof()) {
             line_stream.getline(buf, 32, ',');
-            dst.emplace_back(std::atoi(buf));
+            unsigned int u;
+            sscanf(buf, "%x", &u);
+            dst.emplace_back(u);
         }
         return true;
     }
