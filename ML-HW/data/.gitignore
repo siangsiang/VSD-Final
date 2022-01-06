@@ -1,0 +1,6 @@
+*/*
+!.gitignore
+
+!*/*_[0-9].dat
+!*/*_112.dat
+!weights/*
