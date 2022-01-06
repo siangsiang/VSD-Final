@@ -1,0 +1,33 @@
+in_2d.shape = (1, 261)
+
+conv1d_0 start
+conv1d_0_out.shape = (5, 129)
+conv1d_0 end
+
+maxpool1d_0 start
+maxpool1d_0_out.shape = (5, 64)
+maxpool1d_0 end
+
+conv1d_1 start
+conv1d_1_out.shape = (2, 30)
+conv1d_1 end
+
+maxpool1d_1 start
+maxpool1d_1_out.shape = (2, 15)
+maxpool1d_1 end
+
+flatten start
+flatten_out.shape = (30)
+flatten end
+
+fc_0 start
+fc_0_out.shape = (9)
+fc_0 end
+
+fc_1 start
+fc_1_out.shape = (5)
+fc_1 end
+
+Groundtruth is: 3
+Classified as: 1
+Fail

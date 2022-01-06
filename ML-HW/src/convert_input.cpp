@@ -5,56 +5,69 @@
 #include <vector>
 #include <algorithm>
 #include <string>
+#include <dirent.h>
+#include <cstdint>
 
 using namespace std;
 
 const string srcdir = "rawdata/input/";
 const string dstdir = "data/input/";
 
-const string files[] = {
-    "1_golden_double_112.dat"
-};
+int listdir(vector<string> &filelist, string dirpath)
+{
+    filelist.clear();
+    DIR *dir;
+    struct dirent *ent;
+    if ((dir = opendir (dirpath.c_str())) != NULL) {
+        /* print all the files and directories within directory */
+        while ((ent = readdir (dir)) != NULL) {
+            // printf ("%s\n", ent->d_name);
+            if (ent->d_name[0] != '.')
+                filelist.emplace_back(ent->d_name);
+        }
+        closedir (dir);
+    } else {
+        /* could not open directory */
+        perror ("");
+        return EXIT_FAILURE;
+    }
+}
 
 void convert_fp(string srcpath, string dstpath)
 {
     cout << srcpath << endl;
     cout << dstpath << endl;
-    CSVReader* csv_reader;
-    try {
-        csv_reader = new CSVReader(srcpath);
-    } catch (const char* msg) {
-        cerr << msg << endl;
+    
+    vector<uint32_t> v;
+    FILE* fp = fopen(srcpath.c_str(), "r");
+    char linebuf[1024];
+    while (fscanf(fp, "%[^\n]%*c", linebuf) != EOF) {
+        uint32_t u;
+        sscanf(linebuf, "%x", &u);
+        v.emplace_back(u);
     }
-
-    vector<vector<double>> data_double;
-    do {
-        data_double.emplace_back();
-    }while (csv_reader->read_double_line(data_double.back()));
-
-    data_double.pop_back();
 
     fstream ofs(dstpath, ios::out);
 
-    for (auto &dv : data_double) {
-        int i = 0;
-        for (double &d : dv) {
-            FixedPointNumber<3, 28> fp(d);
-            ofs << fp;
-            ++i;
-            if (i != dv.size()) {
-                ofs << ',';
-            }
+    int i = 0;
+    for (uint32_t &u : v) {
+        FixedPointNumber<3, 28> fp(u);
+        ofs << fp;
+        ++i;
+        if (i != v.size()) {
+            ofs << ',';
         }
-        ofs << endl;
     }
+    ofs << endl;
 
     ofs.close();
 }
 
 int main()
 {
-    const int n_files = sizeof(files) / sizeof(string);
-    for (int i = 0; i < n_files; ++i) {
+    vector<string> files;
+    listdir(files, "rawdata/input");
+    for (int i = 0; i < files.size(); ++i) {
         string srcpath = srcdir + files[i];
         string dstpath = dstdir + files[i];
         convert_fp(srcpath, dstpath);

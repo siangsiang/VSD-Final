@@ -6,10 +6,31 @@
 #include <algorithm>
 #include <string>
 #include <cstdint>
+#include <dirent.h>
 
 using namespace std;
 
 using FP = FixedPointNumber<3, 28>;
+
+int listdir(vector<string> &filelist, string dirpath)
+{
+    filelist.clear();
+    DIR *dir;
+    struct dirent *ent;
+    if ((dir = opendir (dirpath.c_str())) != NULL) {
+        /* print all the files and directories within directory */
+        while ((ent = readdir (dir)) != NULL) {
+            // printf ("%s\n", ent->d_name);
+            if (ent->d_name[0] != '.')
+                filelist.emplace_back(ent->d_name);
+        }
+        closedir (dir);
+    } else {
+        /* could not open directory */
+        perror ("");
+        return EXIT_FAILURE;
+    }
+}
 
 bool read_ecg_input(const string &filepath, vector<FP> &dst)
 {
@@ -315,23 +336,32 @@ int main(int argc, char* argv[])
     fc_weights_filepath.emplace_back("data/weights/Linear(in_features=30, out_features=9, bias=False).csv");
     fc_weights_filepath.emplace_back("data/weights/Linear(in_features=9, out_features=5, bias=False).csv");
 
+    string dir = "data/input/";
+    vector<string> files;
+    listdir(files, dir);
+    int pass_cnt = 0;
+    int total_cnt = 0;
+    for (string &filename : files) {
 
-    if (argc != 2) {
-        cerr << "Invalid argument!" << endl;
-        exit(1);
+        string filepath = dir + filename;
+        cout << filepath << endl;
+
+        vector<FP> input_fp;
+
+        read_ecg_input(filepath, input_fp);
+
+        int ground_truth = (int)(filename[0] - '0');
+
+        int clz = inference(input_fp, filename, ground_truth);
+        
+        total_cnt++;
+        if (clz == ground_truth)
+            pass_cnt++;
     }
 
-    char* filepath = argv[1];
-    string filename = string(filepath+string(filepath).find_last_of('/')+1);
-    vector<FP> input_fp;
-
-    read_ecg_input(filepath, input_fp);
-
-    int ground_truth = (int)(filename[0] - '0');
-    cout << filename << endl;
-
-    int clz = inference(input_fp, filename, ground_truth);
-    cout << "Classified as: " << clz << endl;
+    cout << "Pass: " << pass_cnt << endl;
+    cout << "Total: " << total_cnt << endl;
+    cout << "Accuracy: " << 1.0 * pass_cnt / total_cnt << endl;
 
     return 0;
 }

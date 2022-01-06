@@ -11,4 +11,4 @@ ml: src/ml.cpp
 	g++ --std=c++11 -o ml src/ml.cpp
 
 run_ml: ml
-	./ml data/input/1_golden_double_112.dat
+	./ml
