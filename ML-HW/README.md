@@ -1,2 +1,2 @@
 * rawdata: The ECG data & weights in double
-* data: The ECG data & weights converted to fixed point
+* data: The ECG data & weights converted to fixed point for C++ ML to inference
