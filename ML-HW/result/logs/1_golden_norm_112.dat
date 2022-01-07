@@ -37,5 +37,5 @@ fc_1_out.shape = (5)
 fc_1 end
 
 Groundtruth is: 1
-Classified as: 1
-Pass
+Classified as: 2
+Fail
