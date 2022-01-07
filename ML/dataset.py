@@ -1,7 +1,7 @@
 import os
 import shutil
 
-datadir  = '../DSP/result/golden_norm_double/'
+datadir  = '../DSP/result/golden_double/'
 filelist = os.listdir(datadir)
 # print(filelist)
 cls_set = set()
