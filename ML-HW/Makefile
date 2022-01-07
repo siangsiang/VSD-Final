@@ -12,3 +12,20 @@ ml: src/ml.cpp
 
 run_ml: ml
 	./ml
+
+.PHONY:
+clean_data:
+	rm -f data/input/*
+	rm -f data/weights/*
+	rm -f result/conv1d_0_golden/*
+	rm -f result/conv1d_1_golden/*
+	rm -f result/fc_0_golden/*
+	rm -f result/fc_1_golden/*
+	rm -f result/flatten_golden/*
+	rm -f result/input/*
+	rm -f result/logs/*
+	rm -f result/maxpool1d_0_golden/*
+	rm -f result/maxpool1d_1_golden/*
+	rm -f result/output/*
+	rm -f result/relu_0_golden/*
+	rm -f result/relu_1_golden/*

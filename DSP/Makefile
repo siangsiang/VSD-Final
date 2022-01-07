@@ -8,3 +8,13 @@ process: src/process_data.cpp include/csvreader.hpp include/FixedPointNumber.hpp
 clean:
 	rm -f main
 	rm -f process_data
+
+.PHONY: cleanresult
+cleanresult:
+	rm -f result/golden/*
+	rm -f result/golden_double/*
+	rm -f result/golden_norm/*
+	rm -f result/golden_norm_double/*
+	rm -f result/input/*
+	rm -f result/input_double/*
+	rm -f result/fir_coeff.sv
