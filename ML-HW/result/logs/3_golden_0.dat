@@ -4,6 +4,10 @@ conv1d_0 start
 conv1d_0_out.shape = (5, 129)
 conv1d_0 end
 
+relu_0 start
+relu_0_out.shape = (5, 129)
+relu_0 end
+
 maxpool1d_0 start
 maxpool1d_0_out.shape = (5, 64)
 maxpool1d_0 end
@@ -11,6 +15,10 @@ maxpool1d_0 end
 conv1d_1 start
 conv1d_1_out.shape = (2, 30)
 conv1d_1 end
+
+relu_1 start
+relu_1_out.shape = (2, 30)
+relu_1 end
 
 maxpool1d_1 start
 maxpool1d_1_out.shape = (2, 15)
@@ -29,5 +37,5 @@ fc_1_out.shape = (5)
 fc_1 end
 
 Groundtruth is: 3
-Classified as: 3
-Pass
+Classified as: 1
+Fail

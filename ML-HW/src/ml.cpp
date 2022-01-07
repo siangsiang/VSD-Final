@@ -99,16 +99,6 @@ void conv1d(int layer_id, vector<vector<FP>> &in, vector<vector<FP>> &out)
         read_conv1d_weights(conv1d_weights_filepath[layer_id][f], weights[f]);
     }
 
-    // for (int f = 0; f < n_filter; ++f) {
-    //     for (int d = 0; d < weights[f].size(); ++d) {
-    //         for (int i = 0; i < weights[f][d].size(); ++i) {
-    //             cout << weights[f][d][i] << ' ';
-    //         }
-    //         cout << endl;
-    //     }
-    //     cout << endl;
-    // }
-
     out.clear();
     out.resize(n_filter);
 
@@ -121,7 +111,7 @@ void conv1d(int layer_id, vector<vector<FP>> &in, vector<vector<FP>> &out)
                 vector<FP> &filter_vec = filter[dep];
                 vector<FP> &in_vec = in[dep];
                 for (int k = 0; k < filter_vec.size(); ++k) {
-                    FP product = filter_vec[k] * in_vec[k];
+                    FP product = filter_vec[k] * in_vec[k+i-(filter[0].size()-1)];
                     fp = fp + product;
                     if (product.is_overflowed() || fp.is_overflowed()) {
                         cout << "overflowed!" << endl;
@@ -224,8 +214,8 @@ void relu(vector<FP> &in, vector<FP> &out)
 {
     out.clear();
     for (FP &fp : in) {
-        if (fp.to_double() <= 0)
-            out.emplace_back(FP(0u));
+        if (fp.to_double() <= 0.0)
+            out.emplace_back(0u);
         else
             out.emplace_back(fp);
     }
@@ -237,8 +227,8 @@ void relu(vector<vector<FP>> &in, vector<vector<FP>> &out)
     for (auto &v : in) {
         out.emplace_back();
         for (FP &fp : v) {
-            if (fp.to_double() <= 0)
-                out.back().emplace_back(FP(0u));
+            if (fp.to_double() <= 0.0)
+                out.back().emplace_back(0u);
             else
                 out.back().emplace_back(fp);
         }
@@ -294,16 +284,16 @@ int inference(vector<FP> &in, const string &filename, int ground_truth)
     record_golden(conv1d_0_out, string("result/conv1d_0_golden/")+filename);
     ofs << "conv1d_0 end" << endl << endl;
 
-    // ofs << "relu_0 start" << endl;
-    // vector<vector<FP>> relu_0_out;
-    // relu(conv1d_0_out, relu_0_out);
-    // ofs << "relu_0_out.shape = (" << relu_0_out.size() << ", " << relu_0_out[0].size() << ")" << endl;
-    // record_golden(relu_0_out, string("result/relu_0_golden/")+filename);
-    // ofs << "relu_0 end" << endl << endl;
+    ofs << "relu_0 start" << endl;
+    vector<vector<FP>> relu_0_out;
+    relu(conv1d_0_out, relu_0_out);
+    ofs << "relu_0_out.shape = (" << relu_0_out.size() << ", " << relu_0_out[0].size() << ")" << endl;
+    record_golden(relu_0_out, string("result/relu_0_golden/")+filename);
+    ofs << "relu_0 end" << endl << endl;
 
     ofs << "maxpool1d_0 start" << endl;
     vector<vector<FP>> maxpool1d_0_out;
-    maxpool1d(conv1d_0_out, maxpool1d_0_out);
+    maxpool1d(relu_0_out, maxpool1d_0_out);
     ofs << "maxpool1d_0_out.shape = (" << maxpool1d_0_out.size() << ", " << maxpool1d_0_out[0].size() << ")" << endl;
     record_golden(maxpool1d_0_out, string("result/maxpool1d_0_golden/")+filename);
     ofs << "maxpool1d_0 end" << endl << endl;
@@ -315,16 +305,16 @@ int inference(vector<FP> &in, const string &filename, int ground_truth)
     record_golden(conv1d_1_out, string("result/conv1d_1_golden/")+filename);
     ofs << "conv1d_1 end" << endl << endl;
 
-    // ofs << "relu_1 start" << endl;
-    // vector<vector<FP>> relu_1_out;
-    // relu(conv1d_1_out, relu_1_out);
-    // ofs << "relu_1_out.shape = (" << relu_1_out.size() << ", " << relu_1_out[0].size() << ")" << endl;
-    // record_golden(relu_1_out, string("result/relu_1_golden/")+filename);
-    // ofs << "relu_1 end" << endl << endl;
+    ofs << "relu_1 start" << endl;
+    vector<vector<FP>> relu_1_out;
+    relu(conv1d_1_out, relu_1_out);
+    ofs << "relu_1_out.shape = (" << relu_1_out.size() << ", " << relu_1_out[0].size() << ")" << endl;
+    record_golden(relu_1_out, string("result/relu_1_golden/")+filename);
+    ofs << "relu_1 end" << endl << endl;
 
     ofs << "maxpool1d_1 start" << endl;
     vector<vector<FP>> maxpool1d_1_out;
-    maxpool1d(conv1d_1_out, maxpool1d_1_out);
+    maxpool1d(relu_1_out, maxpool1d_1_out);
     ofs << "maxpool1d_1_out.shape = (" << maxpool1d_1_out.size() << ", " << maxpool1d_1_out[0].size() << ")" << endl;
     record_golden(maxpool1d_1_out, string("result/maxpool1d_1_golden/")+filename);
     ofs << "maxpool1d_1 end" << endl << endl;
