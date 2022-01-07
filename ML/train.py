@@ -210,12 +210,12 @@ def main():
         x = weights.detach().numpy()
         if x.ndim == 2:
             df = pd.DataFrame(x)
-            df.to_csv(f'weights/{str(layer)}.csv', header=None, index=None)
+            df.to_csv(f'weights/{str(layer)}.csv', header=None, index=None, float_format='%.20f')
             print(df)
         elif x.ndim == 3:
             for i in range(x.shape[0]):
                 df = pd.DataFrame(x[i])
-                df.to_csv(f'weights/{str(layer)}_{i}.csv', header=None, index=None)
+                df.to_csv(f'weights/{str(layer)}_{i}.csv', header=None, index=None, float_format='%.20f')
                 print(df)
 
 

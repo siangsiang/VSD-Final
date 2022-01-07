@@ -7,13 +7,23 @@ convert_input: src/convert_input.cpp
 test: src/test.cpp
 	g++ --std=c++11 -o test src/test.cpp
 
-ml: src/ml.cpp
+.PHONY: ml
+ml:
 	g++ --std=c++11 -o ml src/ml.cpp
 
+.PHONY: ml-dbl
+ml-dbl:
+	g++ --std=c++11 -o ml-dbl src/ml-dbl.cpp
+
+.PHONY: run_ml
 run_ml: ml
 	./ml
 
-.PHONY:
+.PHONY: run_ml-dbl
+run_ml-dbl: ml-dbl
+	./ml-dbl
+
+.PHONY: clean_data
 clean_data:
 	rm -f data/input/*
 	rm -f data/weights/*
@@ -29,3 +39,15 @@ clean_data:
 	rm -f result/output/*
 	rm -f result/relu_0_golden/*
 	rm -f result/relu_1_golden/*
+	rm -f result-dbl/conv1d_0_golden/*
+	rm -f result-dbl/conv1d_1_golden/*
+	rm -f result-dbl/fc_0_golden/*
+	rm -f result-dbl/fc_1_golden/*
+	rm -f result-dbl/flatten_golden/*
+	rm -f result-dbl/input/*
+	rm -f result-dbl/logs/*
+	rm -f result-dbl/maxpool1d_0_golden/*
+	rm -f result-dbl/maxpool1d_1_golden/*
+	rm -f result-dbl/output/*
+	rm -f result-dbl/relu_0_golden/*
+	rm -f result-dbl/relu_1_golden/*
