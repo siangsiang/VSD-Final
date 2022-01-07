@@ -10,7 +10,7 @@
 
 using namespace std;
 
-using FP = FixedPointNumber<3, 28>;
+using FP = FixedPointNumber<3, 12>;
 
 int listdir(vector<string> &filelist, string dirpath)
 {

@@ -51,7 +51,7 @@ void convert_fp(string srcpath, string dstpath)
 
     int i = 0;
     for (uint32_t &u : v) {
-        FixedPointNumber<3, 28> fp(u);
+        FixedPointNumber<3, 12> fp(u);
         ofs << fp;
         ++i;
         if (i != v.size()) {

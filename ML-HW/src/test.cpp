@@ -21,7 +21,7 @@ int main()
         unsigned int u;
         while (sscanf(linebuf+offset, "%x%n", &u, &inc) != EOF) {
             offset += inc;
-            FixedPointNumber<3, 28> fp(u);
+            FixedPointNumber<3, 12> fp(u);
             cout << fp << ' ';
         }
     }

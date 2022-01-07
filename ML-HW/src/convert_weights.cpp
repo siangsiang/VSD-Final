@@ -48,7 +48,7 @@ void convert_fp(string srcpath, string dstpath)
     for (auto &dv : data_double) {
         int i = 0;
         for (double &d : dv) {
-            FixedPointNumber<3, 28> fp(d);
+            FixedPointNumber<3, 12> fp(d);
             ofs << fp;
             ++i;
             if (i != dv.size()) {

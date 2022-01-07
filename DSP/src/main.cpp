@@ -32,7 +32,7 @@ int main()
     }
 
     vector<double> fir_coeff_double;
-    vector<FixedPointNumber<3, 28>> fir_coeff_fixed;
+    vector<FixedPointNumber<3, 12>> fir_coeff_fixed;
     csv_reader->read_double_line(fir_coeff_double);
     for (double d : fir_coeff_double) {
         cout << d << ' ';
@@ -47,7 +47,7 @@ int main()
         fstream ofs("result/fir_coeff.sv", ios::out);
         int i = 0;
         for (auto &fp : fir_coeff_fixed) {
-            ofs << "reg [31:0] FIR_C" << i << " = 32'h" << fp << ";";
+            ofs << "reg [15:0] FIR_C" << i << " = 16'h" << fp << ";";
             ofs << "    // " << fixed << setprecision(20) << fp.to_double() << endl;
             i++;
         }
@@ -62,7 +62,7 @@ int main()
 
     vector<vector<int>> data_2d_int;
     vector<vector<double>> data_2d_double;
-    vector<vector<FixedPointNumber<3, 28>>> data_2d_fixed;
+    vector<vector<FixedPointNumber<3, 12>>> data_2d_fixed;
     do {
         data_2d_int.emplace_back();
     }while (csv_reader->read_int_line(data_2d_int.back()));
@@ -80,7 +80,7 @@ int main()
         data_2d_fixed.emplace_back();
         for (auto &v : dv) {
             data_2d_double.back().emplace_back((double)v / 1024.0);
-            data_2d_fixed.back().emplace_back(v << (28-10));
+            data_2d_fixed.back().emplace_back(v << (12-10));
         }
     }
 
@@ -119,7 +119,7 @@ int main()
             ofs << endl;
         }
 
-        vector<FixedPointNumber<3, 28>> y = convolution(data_2d_fixed[t], fir_coeff_fixed);
+        vector<FixedPointNumber<3, 12>> y = convolution(data_2d_fixed[t], fir_coeff_fixed);
 
         {
             int i = 0;
@@ -164,7 +164,7 @@ int main()
             }
         }
 
-        vector<FixedPointNumber<3, 28>> y_norm;
+        vector<FixedPointNumber<3, 12>> y_norm;
 
         {
             int i = 0;
@@ -185,9 +185,9 @@ int main()
                 }
             }
 
-            FixedPointNumber<3, 28> min_fixed = y[min_idx];
-            FixedPointNumber<3, 28> max_fixed = y[max_idx];
-            FixedPointNumber<3, 28> denominator = max_fixed - min_fixed;
+            FixedPointNumber<3, 12> min_fixed = y[min_idx];
+            FixedPointNumber<3, 12> max_fixed = y[max_idx];
+            FixedPointNumber<3, 12> denominator = max_fixed - min_fixed;
             for (int i = 0; i < y.size(); ++i) {
                 auto fp = y[i];
                 fp = fp - min_fixed;
