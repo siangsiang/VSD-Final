@@ -46,8 +46,9 @@ int main()
     {
         fstream ofs("result/fir_coeff.sv", ios::out);
         int i = 0;
+        ofs << "wire [31:0] FIR_C [99:0];" << endl;
         for (auto &fp : fir_coeff_fixed) {
-            ofs << "reg [31:0] FIR_C" << i << " = 32'h" << fp << ";";
+            ofs << "assign FIR_C[" << i << "] = 31'h" << fp << ";";
             ofs << "    // " << fixed << setprecision(20) << fp.to_double() << endl;
             i++;
         }
