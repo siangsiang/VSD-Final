@@ -23,6 +23,14 @@ run_ml: ml
 run_ml-dbl: ml-dbl
 	./ml-dbl
 
+.PHONY: gen_dram_data
+gen_dram_data:
+	g++ --std=c++11 -o gen_dram_data src/gen_dram_data.cpp
+
+.PHONY: run_gen_dram_data
+run_gen_dram_data: gen_dram_data
+	./gen_dram_data
+
 .PHONY: clean_data
 clean_data:
 	rm -f data/input/*
