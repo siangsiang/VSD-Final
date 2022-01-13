@@ -74,9 +74,15 @@ int main(int argc, char* argv[])
                 if (cls_idx[c] < cls_files[c].size()) {
                     string result_dir      = "../ML-HW/result/output/";
                     string result_filename = cls_files[c][cls_idx[c]];
+                    result_filename = result_filename.replace(result_filename.find("input"), 5, "golden");
                     string result_filepath = result_dir + result_filename;
                     fstream ifs(result_filepath, ios::in);
                     int result;
+                    if (!ifs)
+                    {
+                        cout << "Cannot open " << result_filepath << endl;
+                        exit(0);
+                    }
                     ifs >> result;
 
                     string input_filename  = cls_files[c][cls_idx[c]];
