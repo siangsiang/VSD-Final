@@ -68,8 +68,8 @@ int main(int argc, char* argv[])
         }
     }
 
-    int num[4] = {10, 100, 1000, 8497};
-    for (int n = 0; n < 4; ++n) {
+    int num[] = {1, 2, 3, 10, 100, 1000, 8497};
+    for (int n = 0; n < sizeof(num)/sizeof(int); ++n) {
         int t = 0;
         fstream ofs_b3(string("dram_data/input/input_")+to_string(num[n])+"_b3.hex", ios::out);
         fstream ofs_b2(string("dram_data/input/input_")+to_string(num[n])+"_b2.hex", ios::out);
