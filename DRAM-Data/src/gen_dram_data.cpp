@@ -87,7 +87,7 @@ int main(int argc, char* argv[])
 
                     string input_filename  = cls_files[c][cls_idx[c]];
                     string input_filepath  = dir + input_filename;
-                    cout << input_filepath << endl;
+                    cout << t << ' ' << input_filepath << endl;
 
                     cls_idx[c]++;
 
