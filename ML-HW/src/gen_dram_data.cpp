@@ -32,11 +32,11 @@ int listdir(vector<string> &filelist, string dirpath)
     }
 }
 
-bool read_ecg_input(const string &filepath, vector<FP> &dst)
+bool read_ecg_input(const string &input_filepath, vector<FP> &dst)
 {
     CSVReader* csv_reader;
     try {
-        csv_reader = new CSVReader(filepath);
+        csv_reader = new CSVReader(input_filepath);
     } catch (const char* msg) {
         cerr << msg << endl;
         return false;
@@ -58,6 +58,7 @@ int main(int argc, char* argv[])
     string dir = "data/input/";
     vector<string> files;
     listdir(files, dir);
+    cout << files.size() << endl;
     sort(files.begin(), files.end());
     vector<vector<string>> cls_files(10);
     for (int c = 0, i = 0; c < 10; ++c) {
@@ -67,7 +68,7 @@ int main(int argc, char* argv[])
         }
     }
 
-    int num[4] = {10, 100, 1000, 8192};
+    int num[4] = {10, 100, 1000, 8497};
     for (int n = 0; n < 4; ++n) {
         int t = 0;
         fstream ofs_b3(string("dram_data/input/input_")+to_string(num[n])+"_b3.hex", ios::out);
@@ -75,23 +76,39 @@ int main(int argc, char* argv[])
         fstream ofs_b1(string("dram_data/input/input_")+to_string(num[n])+"_b1.hex", ios::out);
         fstream ofs_b0(string("dram_data/input/input_")+to_string(num[n])+"_b0.hex", ios::out);
         fstream ofs_golden(string("dram_data/golden/golden_")+to_string(num[n])+".hex", ios::out);
+        fstream ofs_ground(string("dram_data/ground_truth/ground_truth_")+to_string(num[n])+".hex", ios::out);
         vector<int> cls_idx(10, 0);
         bool done = false;
         while (!done) {
             for (int c = 0; c < 10; ++c) {
                 if (cls_idx[c] < cls_files[c].size()) {
-                    string filename = cls_files[c][cls_idx[c]++];
-                    string filepath = dir + filename;
-                    cout << filepath << endl;
+                    string result_dir      = "result/output/";
+                    string result_filename = cls_files[c][cls_idx[c]];
+                    string result_filepath = result_dir + result_filename;
+                    fstream ifs(result_filepath, ios::in);
+                    int result;
+                    ifs >> result;
+
+                    string input_filename  = cls_files[c][cls_idx[c]];
+                    string input_filepath  = dir + input_filename;
+                    cout << input_filepath << endl;
+
+                    cls_idx[c]++;
 
                     vector<FP> input_fp;
-                    read_ecg_input(filepath, input_fp);
+                    read_ecg_input(input_filepath, input_fp);
 
                     ofs_golden << uppercase << hex << setfill('0') << setw(2) << "00";
-                    ofs_golden << uppercase << hex << setfill('0') << setw(2) << c;
+                    ofs_golden << uppercase << hex << setfill('0') << setw(2) << result;
                     ofs_golden << uppercase << hex << setfill('0') << setw(2) << "00";
                     ofs_golden << uppercase << hex << setfill('0') << setw(2) << "00";
                     ofs_golden << '\n';
+
+                    ofs_ground << uppercase << hex << setfill('0') << setw(2) << "00";
+                    ofs_ground << uppercase << hex << setfill('0') << setw(2) << c;
+                    ofs_ground << uppercase << hex << setfill('0') << setw(2) << "00";
+                    ofs_ground << uppercase << hex << setfill('0') << setw(2) << "00";
+                    ofs_ground << '\n';
 
                     for (FP &fp : input_fp) {
                         ofs_b3 << uppercase << hex << setfill('0') << setw(2) << ((fp.get_value() >> 8) & 0xFF) << '\n';
