@@ -32,6 +32,45 @@ int listdir(vector<string> &filelist, string dirpath)
     }
 }
 
+// c = (a0*b0 + a1*b1) + (a2*b2 + a3*b3) + (a4*b4)
+void pe(FP a[5], FP b[5], FP &c)
+{
+    FP ab0 = a[0] * b[0];
+    FP ab1 = a[1] * b[1];
+    FP ab2 = a[2] * b[2];
+    FP ab3 = a[3] * b[3];
+    FP ab4 = a[4] * b[4];
+
+    FP ab01 = ab0 + ab1;
+    FP ab23 = ab2 + ab3;
+    
+    FP ab0123 = ab01 + ab23;
+
+    FP ab01234 = ab0123 + ab4;
+
+    c = ab01234;
+}
+
+void sum(vector<FP> &v,  FP &s)
+{
+    if (v.size() == 1) {
+        s = v[0];
+        return;
+    }
+    vector<FP> tmp;
+    for (int i = 0; i + 1 < v.size(); i += 2) {
+        tmp.emplace_back(v[i] + v[i+1]);
+    }
+    FP tmp_s;
+    sum(tmp, tmp_s);
+    if (v.size() & 1) {
+        s = tmp_s + v.back();
+    }
+    else {
+        s = tmp_s;
+    }
+}
+
 bool read_ecg_input(const string &filepath, vector<FP> &dst)
 {
     CSVReader* csv_reader;
@@ -107,17 +146,23 @@ void conv1d(int layer_id, vector<vector<FP>> &in, vector<vector<FP>> &out)
         
         for (int i = filter[0].size()-1; i < in[0].size(); i += stride) {
             FP fp(0u);
+            vector<FP> sum_vec;
             for (int dep = 0; dep < filter.size(); ++dep) {
                 vector<FP> &filter_vec = filter[dep];
                 vector<FP> &in_vec = in[dep];
-                for (int k = 0; k < filter_vec.size(); ++k) {
-                    FP product = filter_vec[k] * in_vec[k+i-(filter[0].size()-1)];
-                    fp = fp + product;
-                    if (product.is_overflowed() || fp.is_overflowed()) {
-                        cout << "overflowed!" << endl;
-                    }
-                }
+                
+                FP a[5] = {
+                    filter_vec[0], filter_vec[1], filter_vec[2], filter_vec[3], filter_vec[4]
+                };
+                FP b[5] = {
+                    in_vec[0+i-(filter[0].size()-1)], in_vec[1+i-(filter[0].size()-1)], in_vec[2+i-(filter[0].size()-1)], in_vec[3+i-(filter[0].size()-1)], in_vec[4+i-(filter[0].size()-1)]
+                };
+
+                FP tmp;
+                pe(a, b, tmp);
+                sum_vec.emplace_back(tmp);
             }
+            sum(sum_vec, fp);
             out[f].emplace_back(fp);
         }
     }
@@ -186,20 +231,48 @@ bool read_fc_weights(const string &filepath, vector<vector<FP>> &dst)
     return true;
 }
 
+void dot_product(vector<FP> &v1, vector<FP> &v2, FP &c)
+{
+    assert(v1.size() == v2.size());
+    int i = 0;
+    vector<FP> v3;
+    for (i = 0; i + 4 < v1.size(); i += 5) {
+        FP a[5] = {
+            v1[i+0], v1[i+1], v1[i+2], v1[i+3], v1[i+4]
+        };
+        FP b[5] = {
+            v2[i+0], v2[i+1], v2[i+2], v2[i+3], v2[i+4]
+        };
+        FP tmp;
+        pe(a, b, tmp);
+        v3.emplace_back(tmp);
+    }
+    {
+        FP a[5], b[5];
+        for (int ii = 0; ii < 5; ++ii) {
+            if (i + ii < v1.size()) {
+                a[ii] = v1[i+ii];
+                b[ii] = v2[i+ii];
+            }
+            else {
+                a[ii] = 0u;
+                b[ii] = 0u;
+            }
+        }
+        FP tmp;
+        pe(a, b, tmp);
+        v3.emplace_back(tmp);
+    }
+    sum(v3, c);
+}
+
 void mat_mul(vector<FP> &x, vector<vector<FP>> &mat, vector<FP> &y)
 {
     assert(x.size() == mat[0].size());
     y.clear();
     y.resize(mat.size());
     for (int row = 0; row < mat.size(); ++row) {
-        y[row] = 0;
-        for (int col = 0; col < mat[0].size(); ++col) {
-            FP product = x[col] * mat[row][col];
-            y[row] = y[row] + product;
-            if (product.is_overflowed() || y[row].is_overflowed()) {
-                cout << "overflowed!" << endl;
-            }
-        }
+        dot_product(x, mat[row], y[row]);
     }
 }
 
