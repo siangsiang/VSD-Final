@@ -413,17 +413,17 @@ int inference(vector<FP> &in, const string &filename, int ground_truth)
     // record_golden(relu_2_out, string("result/relu_2_golden/")+filename);
     // ofs << "relu_2 end" << endl << endl;
     
-    ofs << "fc_1 start" << endl;
-    vector<FP> fc_1_out;
-    fc(1, fc_0_out, fc_1_out);
-    ofs << "fc_1_out.shape = (" << fc_1_out.size() << ")" << endl;
-    record_golden(fc_1_out, string("result/fc_1_golden/")+filename);
-    ofs << "fc_1 end" << endl << endl;
+    // ofs << "fc_1 start" << endl;
+    // vector<FP> fc_1_out;
+    // fc(1, fc_0_out, fc_1_out);
+    // ofs << "fc_1_out.shape = (" << fc_1_out.size() << ")" << endl;
+    // record_golden(fc_1_out, string("result/fc_1_golden/")+filename);
+    // ofs << "fc_1 end" << endl << endl;
 
-    double max_v = fc_1_out[0].to_double();
+    double max_v = fc_0_out[0].to_double();
     int max_idx = 0;
-    for (int i = 1; i < fc_1_out.size(); ++i) {
-        FP &fp = fc_1_out[i];
+    for (int i = 1; i < fc_0_out.size(); ++i) {
+        FP &fp = fc_0_out[i];
         if (max_v < fp.to_double()) {
             max_v = fp.to_double();
             max_idx = i;
@@ -458,8 +458,8 @@ int main(int argc, char* argv[])
     conv1d_weights_filepath.back().emplace_back("data/weights/Conv1d(5, 2, kernel_size=(5,), stride=(2,), bias=False)_0.csv");
     conv1d_weights_filepath.back().emplace_back("data/weights/Conv1d(5, 2, kernel_size=(5,), stride=(2,), bias=False)_1.csv");
 
-    fc_weights_filepath.emplace_back("data/weights/Linear(in_features=30, out_features=9, bias=False).csv");
-    fc_weights_filepath.emplace_back("data/weights/Linear(in_features=9, out_features=5, bias=False).csv");
+    fc_weights_filepath.emplace_back("data/weights/Linear(in_features=30, out_features=5, bias=False).csv");
+    // fc_weights_filepath.emplace_back("data/weights/Linear(in_features=9, out_features=5, bias=False).csv");
 
     string dir = "data/input/";
     vector<string> files;

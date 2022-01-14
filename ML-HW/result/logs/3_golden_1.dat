@@ -29,12 +29,8 @@ flatten_out.shape = (30)
 flatten end
 
 fc_0 start
-fc_0_out.shape = (9)
+fc_0_out.shape = (5)
 fc_0 end
-
-fc_1 start
-fc_1_out.shape = (5)
-fc_1 end
 
 Groundtruth is: 3
 Classified as: 3

@@ -41,13 +41,12 @@ class ECGModel(nn.Module):
         self.relu_2   = nn.ReLU()
         self.maxp1d_2 = nn.MaxPool1d(kernel_size=2, stride=2)
         self.flatten  = nn.Flatten(start_dim=1, end_dim=-1)
-        self.fc1      = nn.Linear(30, 9, bias=False)
-        self.fc2      = nn.Linear(9, 5, bias=False)
+        self.fc1      = nn.Linear(30, 5, bias=False)
 
     def forward(self, x):
         debug_size  = False
         shape_seq   = []
-        forward_seq = [self.conv1d_1, self.relu_1, self.maxp1d_1, self.conv1d_2, self.relu_2, self.maxp1d_2, self.flatten, self.fc1, self.fc2]
+        forward_seq = [self.conv1d_1, self.relu_1, self.maxp1d_1, self.conv1d_2, self.relu_2, self.maxp1d_2, self.flatten, self.fc1]
 
         shape_seq.append(x.shape)
         for l in forward_seq:

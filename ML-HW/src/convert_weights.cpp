@@ -19,8 +19,7 @@ const string files[] = {
     "Conv1d(1, 5, kernel_size=(5,), stride=(2,), bias=False)_4.csv",
     "Conv1d(5, 2, kernel_size=(5,), stride=(2,), bias=False)_0.csv",
     "Conv1d(5, 2, kernel_size=(5,), stride=(2,), bias=False)_1.csv",
-    "Linear(in_features=9, out_features=5, bias=False).csv",
-    "Linear(in_features=30, out_features=9, bias=False).csv"
+    "Linear(in_features=30, out_features=5, bias=False).csv"
 };
 
 void convert_fp(string srcpath, string dstpath)
