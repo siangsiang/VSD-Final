@@ -1,3 +1,5 @@
+*.log
+
 # General
 .DS_Store
 .AppleDouble
