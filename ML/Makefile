@@ -2,8 +2,8 @@
 help:
 	echo "hi"
 
-.PHONY: cleandata
-cleandata:
+.PHONY: clean_data
+clean_data:
 	rm -f dataset.tar.gz
 	rm -f weights/*
 	rm -f dataset/testset/*

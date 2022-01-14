@@ -1,35 +1,28 @@
+.PHONY: convert_weights
 convert_weights: src/convert_weights.cpp
 	g++ --std=c++11 -o convert_weights src/convert_weights.cpp
+	./convert_weights
 
+.PHONY: convert_input
 convert_input: src/convert_input.cpp
 	g++ --std=c++11 -o convert_input src/convert_input.cpp
-
-test: src/test.cpp
-	g++ --std=c++11 -o test src/test.cpp
+	./convert_input
 
 .PHONY: ml
 ml:
 	g++ --std=c++11 -o ml src/ml.cpp
 
-.PHONY: ml-dbl
-ml-dbl:
-	g++ --std=c++11 -o ml-dbl src/ml-dbl.cpp
+.PHONY: ml_dbl
+ml_dbl:
+	g++ --std=c++11 -o ml_dbl src/ml_dbl.cpp
 
 .PHONY: run_ml
 run_ml: ml
 	./ml
 
 .PHONY: run_ml-dbl
-run_ml-dbl: ml-dbl
-	./ml-dbl
-
-.PHONY: gen_dram_data
-gen_dram_data:
-	g++ --std=c++11 -o gen_dram_data src/gen_dram_data.cpp
-
-.PHONY: run_gen_dram_data
-run_gen_dram_data: gen_dram_data
-	./gen_dram_data
+run_ml-dbl: ml_dbl
+	./ml_dbl
 
 .PHONY: clean_data
 clean_data:
