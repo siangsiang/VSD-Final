@@ -1,135 +1,135 @@
 //conv0 kernel0 coeff
 wire signed[15:0] conv0_kernel0_c[4:0];
-assign conv0_kernel0_c[0] = 16'hFDE2;
-assign conv0_kernel0_c[1] = 16'hFCE1;
-assign conv0_kernel0_c[2] = 16'hF087;
-assign conv0_kernel0_c[3] = 16'hF10E;
-assign conv0_kernel0_c[4] = 16'hF55A;
+assign conv0_kernel0_c[0] = 16'hE8E7;
+assign conv0_kernel0_c[1] = 16'hF728;
+assign conv0_kernel0_c[2] = 16'hF47A;
+assign conv0_kernel0_c[3] = 16'hF677;
+assign conv0_kernel0_c[4] = 16'hF8D5;
 
 
 //conv0 kernel1 coeff
 wire signed[15:0] conv0_kernel1_c[4:0];
-assign conv0_kernel1_c[0] = 16'hFF82;
-assign conv0_kernel1_c[1] = 16'hFE45;
-assign conv0_kernel1_c[2] = 16'h04AA;
-assign conv0_kernel1_c[3] = 16'hFEE1;
-assign conv0_kernel1_c[4] = 16'h01FC;
+assign conv0_kernel1_c[0] = 16'h0591;
+assign conv0_kernel1_c[1] = 16'h0341;
+assign conv0_kernel1_c[2] = 16'h07B8;
+assign conv0_kernel1_c[3] = 16'h0938;
+assign conv0_kernel1_c[4] = 16'h2832;
 
 
 //conv0 kernel2 coeff
 wire signed[15:0] conv0_kernel2_c[4:0];
-assign conv0_kernel2_c[0] = 16'hF660;
-assign conv0_kernel2_c[1] = 16'hF488;
-assign conv0_kernel2_c[2] = 16'hEECE;
-assign conv0_kernel2_c[3] = 16'hF2D6;
-assign conv0_kernel2_c[4] = 16'hF818;
+assign conv0_kernel2_c[0] = 16'hE5E9;
+assign conv0_kernel2_c[1] = 16'hF2E0;
+assign conv0_kernel2_c[2] = 16'hF6AF;
+assign conv0_kernel2_c[3] = 16'hFC48;
+assign conv0_kernel2_c[4] = 16'hFF99;
 
 
 //conv0 kernel3 coeff
 wire signed[15:0] conv0_kernel3_c[4:0];
-assign conv0_kernel3_c[0] = 16'h022A;
-assign conv0_kernel3_c[1] = 16'h0305;
-assign conv0_kernel3_c[2] = 16'h0333;
-assign conv0_kernel3_c[3] = 16'hF94F;
-assign conv0_kernel3_c[4] = 16'hFAB0;
+assign conv0_kernel3_c[0] = 16'hF793;
+assign conv0_kernel3_c[1] = 16'hFDE1;
+assign conv0_kernel3_c[2] = 16'h01E8;
+assign conv0_kernel3_c[3] = 16'hF949;
+assign conv0_kernel3_c[4] = 16'hFB15;
 
 
 //conv0 kernel4 coeff
 wire signed[15:0] conv0_kernel4_c[4:0];
-assign conv0_kernel4_c[0] = 16'h110F;
-assign conv0_kernel4_c[1] = 16'h193E;
-assign conv0_kernel4_c[2] = 16'h1100;
-assign conv0_kernel4_c[3] = 16'h1466;
-assign conv0_kernel4_c[4] = 16'h0A20;
+assign conv0_kernel4_c[0] = 16'h00A4;
+assign conv0_kernel4_c[1] = 16'h0386;
+assign conv0_kernel4_c[2] = 16'hFC1B;
+assign conv0_kernel4_c[3] = 16'h090C;
+assign conv0_kernel4_c[4] = 16'h161A;
 
 
 //conv1 kernel0 coeff
 wire signed[15:0] conv1_kernel0_0_c[4:0];
-assign conv1_kernel0_0_c[0] = 16'h03B1;
-assign conv1_kernel0_0_c[1] = 16'h1198;
-assign conv1_kernel0_0_c[2] = 16'h0C69;
-assign conv1_kernel0_0_c[3] = 16'h0615;
-assign conv1_kernel0_0_c[4] = 16'hFC23;
+assign conv1_kernel0_0_c[0] = 16'h0054;
+assign conv1_kernel0_0_c[1] = 16'h029F;
+assign conv1_kernel0_0_c[2] = 16'hFCBF;
+assign conv1_kernel0_0_c[3] = 16'hFD7F;
+assign conv1_kernel0_0_c[4] = 16'hFEC5;
 
 
 //conv1 kernel0 coeff
 wire signed[15:0] conv1_kernel0_1_c[4:0];
-assign conv1_kernel0_1_c[0] = 16'hFDD7;
-assign conv1_kernel0_1_c[1] = 16'h0186;
-assign conv1_kernel0_1_c[2] = 16'hFD16;
-assign conv1_kernel0_1_c[3] = 16'hFE35;
-assign conv1_kernel0_1_c[4] = 16'hFDC1;
+assign conv1_kernel0_1_c[0] = 16'hFE55;
+assign conv1_kernel0_1_c[1] = 16'h023F;
+assign conv1_kernel0_1_c[2] = 16'hFD7B;
+assign conv1_kernel0_1_c[3] = 16'hFE79;
+assign conv1_kernel0_1_c[4] = 16'hFDC4;
 
 
 //conv1 kernel0 coeff
 wire signed[15:0] conv1_kernel0_2_c[4:0];
-assign conv1_kernel0_2_c[0] = 16'hFDD7;
-assign conv1_kernel0_2_c[1] = 16'h0F23;
-assign conv1_kernel0_2_c[2] = 16'h16AE;
-assign conv1_kernel0_2_c[3] = 16'h0C46;
-assign conv1_kernel0_2_c[4] = 16'hFED2;
+assign conv1_kernel0_2_c[0] = 16'hFCFE;
+assign conv1_kernel0_2_c[1] = 16'hFDD3;
+assign conv1_kernel0_2_c[2] = 16'h0241;
+assign conv1_kernel0_2_c[3] = 16'h00B8;
+assign conv1_kernel0_2_c[4] = 16'h00D1;
 
 
 //conv1 kernel0 coeff
 wire signed[15:0] conv1_kernel0_3_c[4:0];
-assign conv1_kernel0_3_c[0] = 16'h03A7;
-assign conv1_kernel0_3_c[1] = 16'h0139;
-assign conv1_kernel0_3_c[2] = 16'h02C7;
-assign conv1_kernel0_3_c[3] = 16'hFD5F;
-assign conv1_kernel0_3_c[4] = 16'hFD19;
+assign conv1_kernel0_3_c[0] = 16'h0017;
+assign conv1_kernel0_3_c[1] = 16'hFE39;
+assign conv1_kernel0_3_c[2] = 16'h0067;
+assign conv1_kernel0_3_c[3] = 16'hFCD9;
+assign conv1_kernel0_3_c[4] = 16'hFDA4;
 
 
 //conv1 kernel0 coeff
 wire signed[15:0] conv1_kernel0_4_c[4:0];
-assign conv1_kernel0_4_c[0] = 16'h0B41;
-assign conv1_kernel0_4_c[1] = 16'hF478;
-assign conv1_kernel0_4_c[2] = 16'hFC46;
-assign conv1_kernel0_4_c[3] = 16'hFD87;
-assign conv1_kernel0_4_c[4] = 16'hFEB5;
+assign conv1_kernel0_4_c[0] = 16'hFDF4;
+assign conv1_kernel0_4_c[1] = 16'h0181;
+assign conv1_kernel0_4_c[2] = 16'h016A;
+assign conv1_kernel0_4_c[3] = 16'hFE72;
+assign conv1_kernel0_4_c[4] = 16'hFFE0;
 
 
 //conv1 kernel1 coeff
 wire signed[15:0] conv1_kernel1_0_c[4:0];
-assign conv1_kernel1_0_c[0] = 16'h061E;
-assign conv1_kernel1_0_c[1] = 16'h07F6;
-assign conv1_kernel1_0_c[2] = 16'h04D2;
-assign conv1_kernel1_0_c[3] = 16'hFA82;
-assign conv1_kernel1_0_c[4] = 16'hFE3A;
+assign conv1_kernel1_0_c[0] = 16'hF51F;
+assign conv1_kernel1_0_c[1] = 16'h187F;
+assign conv1_kernel1_0_c[2] = 16'h0F60;
+assign conv1_kernel1_0_c[3] = 16'hFB33;
+assign conv1_kernel1_0_c[4] = 16'hF4FA;
 
 
 //conv1 kernel1 coeff
 wire signed[15:0] conv1_kernel1_1_c[4:0];
-assign conv1_kernel1_1_c[0] = 16'hFE5D;
-assign conv1_kernel1_1_c[1] = 16'h0336;
-assign conv1_kernel1_1_c[2] = 16'h01A5;
-assign conv1_kernel1_1_c[3] = 16'h015D;
-assign conv1_kernel1_1_c[4] = 16'h0200;
+assign conv1_kernel1_1_c[0] = 16'hF3C7;
+assign conv1_kernel1_1_c[1] = 16'h097B;
+assign conv1_kernel1_1_c[2] = 16'hF0C1;
+assign conv1_kernel1_1_c[3] = 16'hDD71;
+assign conv1_kernel1_1_c[4] = 16'h2566;
 
 
 //conv1 kernel1 coeff
 wire signed[15:0] conv1_kernel1_2_c[4:0];
-assign conv1_kernel1_2_c[0] = 16'h0706;
-assign conv1_kernel1_2_c[1] = 16'h04C6;
-assign conv1_kernel1_2_c[2] = 16'h05B0;
-assign conv1_kernel1_2_c[3] = 16'hFAE6;
-assign conv1_kernel1_2_c[4] = 16'h0005;
+assign conv1_kernel1_2_c[0] = 16'hEF80;
+assign conv1_kernel1_2_c[1] = 16'h18E3;
+assign conv1_kernel1_2_c[2] = 16'h0ED7;
+assign conv1_kernel1_2_c[3] = 16'h001F;
+assign conv1_kernel1_2_c[4] = 16'hF521;
 
 
 //conv1 kernel1 coeff
 wire signed[15:0] conv1_kernel1_3_c[4:0];
-assign conv1_kernel1_3_c[0] = 16'hFF7E;
-assign conv1_kernel1_3_c[1] = 16'h030B;
-assign conv1_kernel1_3_c[2] = 16'h0087;
-assign conv1_kernel1_3_c[3] = 16'h028F;
-assign conv1_kernel1_3_c[4] = 16'h02E1;
+assign conv1_kernel1_3_c[0] = 16'hFCCB;
+assign conv1_kernel1_3_c[1] = 16'h08BE;
+assign conv1_kernel1_3_c[2] = 16'h057A;
+assign conv1_kernel1_3_c[3] = 16'hFEA8;
+assign conv1_kernel1_3_c[4] = 16'hFEEB;
 
 
 //conv1 kernel1 coeff
 wire signed[15:0] conv1_kernel1_4_c[4:0];
-assign conv1_kernel1_4_c[0] = 16'hD665;
-assign conv1_kernel1_4_c[1] = 16'h0C76;
-assign conv1_kernel1_4_c[2] = 16'h149B;
-assign conv1_kernel1_4_c[3] = 16'h1370;
-assign conv1_kernel1_4_c[4] = 16'h0A85;
+assign conv1_kernel1_4_c[0] = 16'hF899;
+assign conv1_kernel1_4_c[1] = 16'h0304;
+assign conv1_kernel1_4_c[2] = 16'hFA40;
+assign conv1_kernel1_4_c[3] = 16'hEE94;
+assign conv1_kernel1_4_c[4] = 16'h1717;
 
 
