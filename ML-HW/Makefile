@@ -27,8 +27,8 @@ run_ml-dbl: ml_dbl
 .PHONY: gencode
 gencode:
 	cd data && mkdir -p generated_code
-	cd data && python3 gencode_conv.py > generated_code/generated_fc.sv
-	cd data && python3 gencode_fc.py > generated_code/generated_conv.sv
+	cd data && python3 gencode_conv.py > generated_code/generated_conv.sv
+	cd data && python3 gencode_fc.py > generated_code/generated_fc.sv
 
 .PHONY: clean_data
 clean_data:
