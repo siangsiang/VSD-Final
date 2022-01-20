@@ -6,6 +6,10 @@ gen_dram_data:
 run_gen_dram_data: gen_dram_data
 	./gen_dram_data
 
+.PHONY: confusion_matrix
+confusion_matrix:
+	cd dram_data && python3 confusion_matrix.py
+
 .PHONY: clean_data
 clean_data:
 	rm -f dram_data/input/*

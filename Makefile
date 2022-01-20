@@ -7,7 +7,7 @@ all:
 	$(MAKE) -C . __all 2>&1 | tee all.log
 
 .PHONY: __all
-__all: clean_all dsp ml ml_hw dram_data
+__all: clean_all dsp ml ml_hw dram_data confusion_matrix
 
 .PHONY: clean_all
 clean_all: clean_dsp clean_ml clean_ml_hw clean_dram_data
@@ -64,3 +64,11 @@ dram_data:
 .PHONY: __dram_data
 __dram_data:
 	$(MAKE) -C DRAM-Data run_gen_dram_data
+
+.PHONY: confusion_matrix
+confusion_matrix:
+	$(MAKE) -C . __confusion_matrix 2>&1 | tee confusion_matrix.log
+
+.PHONY: __confusion_matrix
+__confusion_matrix:
+	$(MAKE) -C DRAM-Data confusion_matrix
