@@ -25,7 +25,7 @@ for kernel_id in range(2):
             if str == '':
                 break
             str = str[:str.find('\n')].split(',')
-            print(f'//conv{conv_id} kernel{kernel_id} coeff')
+            print(f'//conv{conv_id} kernel{kernel_id}_{channel_id} coeff')
             print(f'wire signed[15:0] conv{conv_id}_kernel{kernel_id}_{channel_id}_c[4:0];')
             for idx in range(0, len(str)):
                 val = str[idx]
