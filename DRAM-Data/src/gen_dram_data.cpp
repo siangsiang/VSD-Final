@@ -65,6 +65,10 @@ int main(int argc, char* argv[])
         fstream ofs_b2(string("dram_data/input/input_")+to_string(num[n])+"_b2.hex", ios::out);
         fstream ofs_b1(string("dram_data/input/input_")+to_string(num[n])+"_b1.hex", ios::out);
         fstream ofs_b0(string("dram_data/input/input_")+to_string(num[n])+"_b0.hex", ios::out);
+        ofs_b3 << "@50000\n";
+        ofs_b2 << "@50000\n";
+        ofs_b1 << "@50000\n";
+        ofs_b0 << "@50000\n";
         fstream ofs_golden(string("dram_data/golden/golden_")+to_string(num[n])+".hex", ios::out);
         fstream ofs_ground(string("dram_data/ground_truth/ground_truth_")+to_string(num[n])+".hex", ios::out);
         vector<int> cls_idx(10, 0);
