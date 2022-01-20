@@ -1,5 +1,5 @@
 fc_id = 0
-filename = 'Linear(in_features=30, out_features=9, bias=False).csv'
+filename = 'weights/Linear(in_features=30, out_features=9, bias=False).csv'
 with open(filename) as rf:
     for kernel_id in range(0, 9):
         str = rf.readline()
@@ -15,7 +15,7 @@ with open(filename) as rf:
         print('\n')
 
 fc_id = 1
-filename = 'Linear(in_features=9, out_features=5, bias=False).csv'
+filename = 'weights/Linear(in_features=9, out_features=5, bias=False).csv'
 with open(filename) as rf:
     for kernel_id in range(0, 5):
         str = rf.readline()

@@ -1,6 +1,6 @@
 conv_id = 0
 for kernel_id in range(5):
-    filename = f'Conv1d(1, 5, kernel_size=(5,), stride=(2,), bias=False)_{kernel_id}.csv'
+    filename = f'weights/Conv1d(1, 5, kernel_size=(5,), stride=(2,), bias=False)_{kernel_id}.csv'
     with open(filename) as rf:
         while True:
             str = rf.readline()
@@ -17,7 +17,7 @@ for kernel_id in range(5):
 
 conv_id = 1
 for kernel_id in range(2):
-    filename = f'Conv1d(5, 2, kernel_size=(5,), stride=(2,), bias=False)_{kernel_id}.csv'
+    filename = f'weights/Conv1d(5, 2, kernel_size=(5,), stride=(2,), bias=False)_{kernel_id}.csv'
     with open(filename) as rf:
         channel_id = 0
         while True:

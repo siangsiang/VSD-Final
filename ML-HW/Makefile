@@ -24,10 +24,17 @@ run_ml: ml
 run_ml-dbl: ml_dbl
 	./ml_dbl
 
+.PHONY: gencode
+gencode:
+	cd data && mkdir -p generated_code
+	cd data && python3 gencode_conv.py > generated_code/generated_fc.sv
+	cd data && python3 gencode_fc.py > generated_code/generated_conv.sv
+
 .PHONY: clean_data
 clean_data:
 	rm -f data/input/*
 	rm -f data/weights/*
+	rm -f data/generated_code/*
 	rm -f result/conv1d_0_golden/*
 	rm -f result/conv1d_1_golden/*
 	rm -f result/fc_0_golden/*

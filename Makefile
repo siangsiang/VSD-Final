@@ -50,6 +50,7 @@ ml_hw:
 .PHONY: __ml_hw
 __ml_hw:
 	$(MAKE) -C ML-HW convert_weights
+	$(MAKE) -C ML-HW gencode
 	$(MAKE) -C ML-HW convert_input
 	$(MAKE) -C ML-HW run_ml
 	
