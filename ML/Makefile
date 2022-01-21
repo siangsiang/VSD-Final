@@ -2,9 +2,12 @@
 help:
 	echo "hi"
 
-.PHONY: ml
-ml:
+.PHONY: dataset
+dataset:
 	python3 dataset.py
+
+.PHONY: ml
+ml: dataset
 	python3 train.py
 
 .PHONY: clean_data

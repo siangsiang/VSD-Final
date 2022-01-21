@@ -28,6 +28,10 @@ trainset_percent = 0.7
 valset_percent   = 0.15
 testset_percent  = 0.15
 
+trainset_list_fp = open('dataset/trainset_list.txt', 'w')
+testset_list_fp  = open('dataset/testset_list.txt', 'w')
+valset_list_fp   = open('dataset/valset_list.txt', 'w')
+
 for cls_filelist in cls_list:
     n = len(cls_filelist)
     trainset_endidx = int(trainset_percent * n)
@@ -39,15 +43,22 @@ for cls_filelist in cls_list:
         dst_filepath = 'dataset/trainset/' + cls_filelist[i]
         print(dst_filepath)
         shutil.copy(src_filepath, dst_filepath)
+        trainset_list_fp.write(cls_filelist[i] + '\n')
 
     for i in range(trainset_endidx, valset_endidx):
         src_filepath = datadir + cls_filelist[i]
         dst_filepath = 'dataset/valset/' + cls_filelist[i]
         print(dst_filepath)
         shutil.copy(src_filepath, dst_filepath)
+        valset_list_fp.write(cls_filelist[i] + '\n')
 
     for i in range(valset_endidx, testset_endidx):
         src_filepath = datadir + cls_filelist[i]
         dst_filepath = 'dataset/testset/' + cls_filelist[i]
         print(dst_filepath)
         shutil.copy(src_filepath, dst_filepath)
+        testset_list_fp.write(cls_filelist[i] + '\n')
+
+trainset_list_fp.close()
+testset_list_fp.close()
+valset_list_fp.close()

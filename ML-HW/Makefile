@@ -18,6 +18,8 @@ convert_input: src/convert_input.cpp
 	rm -f convert_input
 	g++ -o convert_input src/convert_input.cpp $(OPT)
 	./convert_input
+	cp ../ML/dataset/*_list.txt data/input/dataset_list
+	sed -i 's/_double_/_/g' data/input/dataset_list/*.txt
 
 .PHONY: ml
 ml: src/ml.cpp

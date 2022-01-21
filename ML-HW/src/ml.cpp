@@ -460,33 +460,56 @@ int main(int argc, char* argv[])
     fc_weights_filepath.emplace_back("data/weights/Linear(in_features=30, out_features=9, bias=False).csv");
     fc_weights_filepath.emplace_back("data/weights/Linear(in_features=9, out_features=5, bias=False).csv");
 
-    string dir = "data/input/";
-    vector<string> files;
-    listdir(files, dir);
-    int pass_cnt = 0;
-    int total_cnt = 0;
-    for (string &filename : files) {
+    const char* subtasks[3] = {
+        "trainset_list.txt",
+        "valset_list.txt",
+        "testset_list.txt",
+    };
+    int pass_cnt[3]  = {0};
+    int total_cnt[3] = {0};
 
-        string filepath = dir + filename;
-        cout << filepath << endl;
+    for (int t = 0; t < sizeof(subtasks)/sizeof(char*); ++t) {
+        fstream listfile(string("data/input/dataset_list/")+subtasks[t]);
+        vector<string> files;
+        string buf;
+        while (listfile >> buf) {
+            files.emplace_back(buf);
+        }
 
-        vector<FP> input_fp;
+        string dir = "data/input/";
+        for (string &filename : files) {
 
-        read_ecg_input(filepath, input_fp);
+            string filepath = dir + filename;
+            cout << filepath << endl;
 
-        int ground_truth = (int)(filename[0] - '0');
+            vector<FP> input_fp;
 
-        int clz = inference(input_fp, filename, ground_truth);
-        
-        total_cnt++;
-        if (clz == ground_truth)
-            pass_cnt++;
-        cout << clz << ' ' << ground_truth << endl;
+            read_ecg_input(filepath, input_fp);
+
+            int ground_truth = (int)(filename[0] - '0');
+
+            int clz = inference(input_fp, filename, ground_truth);
+            
+            total_cnt[t]++;
+            if (clz == ground_truth)
+                pass_cnt[t]++;
+            cout << clz << ' ' << ground_truth << endl;
+        }
+
+        cout << subtasks[t] << endl;
+        cout << "Pass: " << pass_cnt[t] << endl;
+        cout << "Total: " << total_cnt[t] << endl;
+        cout << "Accuracy: " << 1.0 * pass_cnt[t] / total_cnt[t] << endl;
     }
 
-    cout << "Pass: " << pass_cnt << endl;
-    cout << "Total: " << total_cnt << endl;
-    cout << "Accuracy: " << 1.0 * pass_cnt / total_cnt << endl;
+    cout << endl << endl;
+    for (int t = 0; t < sizeof(subtasks)/sizeof(char*); ++t) {
+        cout << subtasks[t] << endl;
+        cout << "Pass: " << pass_cnt[t] << endl;
+        cout << "Total: " << total_cnt[t] << endl;
+        cout << "Accuracy: " << 1.0 * pass_cnt[t] / total_cnt[t] << endl;
+        cout << endl;
+    }
 
     return 0;
 }
