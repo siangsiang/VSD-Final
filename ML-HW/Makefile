@@ -1,28 +1,32 @@
+SIGN_BITS = 1
+INT_BITS  = 3
+FRAC_BITS = 12
+DEFINE_FIXED = -DSIGN_BITS=$(SIGN_BITS) -DINT_BITS=$(INT_BITS) -DFRAC_BITS=$(FRAC_BITS)
+
+INC = -I../common -I../FixedPointNumberLibrary/include
+
+OPT = -Wall --std=c++14 $(DEFINE_FIXED) $(INC)
+
 .PHONY: convert_weights
 convert_weights: src/convert_weights.cpp
-	g++ --std=c++11 -o convert_weights src/convert_weights.cpp
+	rm -f convert_weights
+	g++ -o convert_weights src/convert_weights.cpp $(OPT)
 	./convert_weights
 
 .PHONY: convert_input
 convert_input: src/convert_input.cpp
-	g++ --std=c++11 -o convert_input src/convert_input.cpp
+	rm -f convert_input
+	g++ -o convert_input src/convert_input.cpp $(OPT)
 	./convert_input
 
 .PHONY: ml
-ml:
-	g++ --std=c++11 -o ml src/ml.cpp
-
-.PHONY: ml_dbl
-ml_dbl:
-	g++ --std=c++11 -o ml_dbl src/ml_dbl.cpp
+ml: src/ml.cpp
+	rm -f ml
+	g++ -o ml src/ml.cpp $(OPT)
 
 .PHONY: run_ml
 run_ml: ml
 	./ml
-
-.PHONY: run_ml-dbl
-run_ml-dbl: ml_dbl
-	./ml_dbl
 
 .PHONY: gencode
 gencode:
@@ -47,15 +51,4 @@ clean_data:
 	rm -f result/output/*
 	rm -f result/relu_0_golden/*
 	rm -f result/relu_1_golden/*
-	rm -f result-dbl/conv1d_0_golden/*
-	rm -f result-dbl/conv1d_1_golden/*
-	rm -f result-dbl/fc_0_golden/*
-	rm -f result-dbl/fc_1_golden/*
-	rm -f result-dbl/flatten_golden/*
-	rm -f result-dbl/input/*
-	rm -f result-dbl/logs/*
-	rm -f result-dbl/maxpool1d_0_golden/*
-	rm -f result-dbl/maxpool1d_1_golden/*
-	rm -f result-dbl/output/*
-	rm -f result-dbl/relu_0_golden/*
-	rm -f result-dbl/relu_1_golden/*
+	

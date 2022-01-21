@@ -1,6 +1,17 @@
+SIGN_BITS = 1
+INT_BITS  = 3
+FRAC_BITS = 12
+DEFINE_FIXED = -DSIGN_BITS=$(SIGN_BITS) -DINT_BITS=$(INT_BITS) -DFRAC_BITS=$(FRAC_BITS)
+
+INC = -I../common -I../FixedPointNumberLibrary/include
+
+OPT = -Wall --std=c++14 $(DEFINE_FIXED) $(INC)
+
+
 .PHONY: gen_dram_data
 gen_dram_data:
-	g++ --std=c++11 -o gen_dram_data src/gen_dram_data.cpp
+	rm -f gen_dram_data
+	g++ -o gen_dram_data src/gen_dram_data.cpp $(OPT)
 
 .PHONY: run_gen_dram_data
 run_gen_dram_data: gen_dram_data

@@ -1,5 +1,6 @@
-#include "../include/csvreader.hpp"
-#include "../include/FixedPointNumber.hpp"
+#include "csvreader.hpp"
+#include "FixedPointNumber.hpp"
+#include "common.hpp"
 
 #include <iostream>
 #include <vector>
@@ -9,8 +10,6 @@
 #include <dirent.h>
 
 using namespace std;
-
-using FP = FixedPointNumber<3, 12>;
 
 int listdir(vector<string> &filelist, string dirpath)
 {
@@ -58,7 +57,7 @@ int main(int argc, char* argv[])
         }
     }
 
-    int num[] = {1, 2, 3, 10, 100, 1000, 8497};
+    int num[] = {1, 2, 3, 10, 100, 1000, files.size()};
     for (int n = 0; n < sizeof(num)/sizeof(int); ++n) {
         int t = 0;
         fstream ofs_b3(string("dram_data/input/input_")+to_string(num[n])+"_b3.hex", ios::out);

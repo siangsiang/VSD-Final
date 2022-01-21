@@ -1,5 +1,6 @@
-#include "../include/csvreader.hpp"
-#include "../include/FixedPointNumber.hpp"
+#include "csvreader.hpp"
+#include "FixedPointNumber.hpp"
+#include "common.hpp"
 
 #include <iostream>
 #include <vector>
@@ -9,8 +10,6 @@
 #include <dirent.h>
 
 using namespace std;
-
-using FP = FixedPointNumber<3, 12>;
 
 int listdir(vector<string> &filelist, string dirpath)
 {

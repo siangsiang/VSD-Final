@@ -1,5 +1,6 @@
-#include "../include/csvreader.hpp"
-#include "../include/FixedPointNumber.hpp"
+#include "csvreader.hpp"
+#include "FixedPointNumber.hpp"
+#include "common.hpp"
 
 #include <iostream>
 #include <vector>
@@ -48,7 +49,7 @@ void convert_fp(string srcpath, string dstpath)
     for (auto &dv : data_double) {
         int i = 0;
         for (double &d : dv) {
-            FixedPointNumber<3, 12> fp(d);
+            FP fp(d);
             ofs << fp;
             ++i;
             if (i != dv.size()) {

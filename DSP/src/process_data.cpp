@@ -1,5 +1,6 @@
-#include "../include/csvreader.hpp"
-#include "../include/FixedPointNumber.hpp"
+#include "csvreader.hpp"
+#include "FixedPointNumber.hpp"
+#include "common.hpp"
 
 #include <iostream>
 #include <vector>

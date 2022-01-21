@@ -1,5 +1,6 @@
-#include "../include/csvreader.hpp"
-#include "../include/FixedPointNumber.hpp"
+#include "csvreader.hpp"
+#include "FixedPointNumber.hpp"
+#include "common.hpp"
 
 #include <iostream>
 #include <iomanip>
@@ -32,7 +33,7 @@ int main()
     }
 
     vector<double> fir_coeff_double;
-    vector<FixedPointNumber<3, 12>> fir_coeff_fixed;
+    vector<FP> fir_coeff_fixed;
     csv_reader->read_double_line(fir_coeff_double);
     for (double d : fir_coeff_double) {
         cout << d << ' ';
@@ -63,7 +64,7 @@ int main()
 
     vector<vector<int>> data_2d_int;
     vector<vector<double>> data_2d_double;
-    vector<vector<FixedPointNumber<3, 12>>> data_2d_fixed;
+    vector<vector<FP>> data_2d_fixed;
     do {
         data_2d_int.emplace_back();
     }while (csv_reader->read_int_line(data_2d_int.back()));
@@ -79,13 +80,21 @@ int main()
     for (auto &dv : data_2d_int) {
         data_2d_double.emplace_back();
         data_2d_fixed.emplace_back();
-        for (auto &v : dv) {
-            data_2d_double.back().emplace_back((double)v / 1024.0);
-            data_2d_fixed.back().emplace_back(v << (12-10));
+        if (FRAC_BITS >= 10) {
+            for (auto &v : dv) {
+                data_2d_double.back().emplace_back((double)v / 1024.0);
+                data_2d_fixed.back().emplace_back(v << (FRAC_BITS-10));
+            }
+        }
+        else {
+            for (auto &v : dv) {
+                data_2d_double.back().emplace_back((double)v / 1024.0);
+                data_2d_fixed.back().emplace_back(v >> (10-FRAC_BITS));
+            }
         }
     }
 
-    for (int t = 0; t < 8497; ++t)
+    for (int t = 0; t < data_2d_int.size() - 1; ++t)
     {
         {
             int i = 0;
@@ -120,7 +129,7 @@ int main()
             ofs << endl;
         }
 
-        vector<FixedPointNumber<3, 12>> y = convolution(data_2d_fixed[t], fir_coeff_fixed);
+        vector<FP> y = convolution(data_2d_fixed[t], fir_coeff_fixed);
 
         {
             int i = 0;
@@ -165,7 +174,7 @@ int main()
             }
         }
 
-        vector<FixedPointNumber<3, 12>> y_norm;
+        vector<FP> y_norm;
 
         {
             int i = 0;
@@ -186,9 +195,9 @@ int main()
                 }
             }
 
-            FixedPointNumber<3, 12> min_fixed = y[min_idx];
-            FixedPointNumber<3, 12> max_fixed = y[max_idx];
-            FixedPointNumber<3, 12> denominator = max_fixed - min_fixed;
+            FP min_fixed = y[min_idx];
+            FP max_fixed = y[max_idx];
+            FP denominator = max_fixed - min_fixed;
             for (int i = 0; i < y.size(); ++i) {
                 auto fp = y[i];
                 fp = fp - min_fixed;
