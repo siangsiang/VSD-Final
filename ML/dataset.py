@@ -36,7 +36,7 @@ for cls_filelist in cls_list:
     n = len(cls_filelist)
     trainset_endidx = int(trainset_percent * n)
     valset_endidx   = trainset_endidx + int(valset_percent * n)
-    testset_endidx  = valset_endidx + int(testset_percent * n)
+    testset_endidx  = n
     
     for i in range(0, trainset_endidx):
         src_filepath = datadir + cls_filelist[i]

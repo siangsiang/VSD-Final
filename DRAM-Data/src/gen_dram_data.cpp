@@ -40,6 +40,7 @@ bool read_ecg_input(const string &input_filepath, vector<FP> &dst)
         sscanf(buf, "%x", &v);
         dst.emplace_back(v);
     }
+    fclose(fp);
 }
 
 int main(int argc, char* argv[])
