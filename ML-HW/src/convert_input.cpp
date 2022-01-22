@@ -47,6 +47,7 @@ void convert_fp(string srcpath, string dstpath)
         sscanf(linebuf, "%x", &u);
         v.emplace_back(u);
     }
+    fclose(fp);
 
     fstream ofs(dstpath, ios::out);
 
