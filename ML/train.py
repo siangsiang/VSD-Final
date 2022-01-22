@@ -10,6 +10,8 @@ from torch.utils.data import DataLoader
 
 import torch.nn.functional as F
 
+import torch.nn.utils.prune as prune
+
 import numpy as np
 import os
 import time
@@ -197,6 +199,17 @@ def main():
     print(model.parameters)
 
     train(model=model, train_loader=train_loader, val_loader=val_loader, num_epoch=num_epoch)
+
+    parameters_to_prune = (
+        (model.fc1, 'weight'),
+        (model.fc2, 'weight'),
+    )
+
+    prune.global_unstructured(
+        parameters_to_prune,
+        pruning_method=prune.L1Unstructured,
+        amount=0.2,
+    )
 
     # print(model.fc1.weight)
     # print(pd.DataFrame(model.fc1.weight.detach().numpy()))
