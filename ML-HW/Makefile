@@ -18,6 +18,7 @@ convert_input: src/convert_input.cpp
 	rm -f convert_input
 	g++ -o convert_input src/convert_input.cpp $(OPT)
 	./convert_input
+	mkdir -p data/input/dataset_list
 	cp ../ML/dataset/*_list.txt data/input/dataset_list
 	sed -i 's/_double_/_/g' data/input/dataset_list/*.txt
 
@@ -38,7 +39,7 @@ gencode:
 
 .PHONY: clean_data
 clean_data:
-	rm -f data/input/*
+	rm -rf data/input/*
 	rm -f data/weights/*
 	rm -f data/generated_code/*
 	rm -f result/conv1d_0_golden/*
