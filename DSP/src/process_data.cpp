@@ -28,6 +28,7 @@ int main()
     do {
         data_double.emplace_back();
     }while (csv_reader->read_double_line(data_double.back()));
+    delete csv_reader;
     data_double.pop_back();
     data_double.pop_back();
 

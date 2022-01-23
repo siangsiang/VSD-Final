@@ -82,6 +82,7 @@ bool read_ecg_input(const string &filepath, vector<FP> &dst)
 
     vector<uint32_t> csv_data;
     csv_reader->read_hex_line(csv_data);
+    delete csv_reader;
 
     dst.clear();
     for (uint32_t u : csv_data) {
@@ -108,6 +109,7 @@ bool read_conv1d_weights(const string &filepath, vector<vector<FP>> &dst)
     do {
         csv_data.emplace_back();
     }while (csv_reader->read_hex_line(csv_data.back()));
+    delete csv_reader;
 
     // the last two lines are empty
     csv_data.pop_back();
@@ -213,6 +215,7 @@ bool read_fc_weights(const string &filepath, vector<vector<FP>> &dst)
     do {
         csv_data.emplace_back();
     }while (csv_reader->read_hex_line(csv_data.back()));
+    delete csv_reader;
 
     // the last two lines are empty
     csv_data.pop_back();

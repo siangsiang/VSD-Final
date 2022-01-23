@@ -68,6 +68,7 @@ int main()
     do {
         data_2d_int.emplace_back();
     }while (csv_reader->read_int_line(data_2d_int.back()));
+    delete csv_reader;
     data_2d_int.pop_back();
 
     vector<int> data_label;

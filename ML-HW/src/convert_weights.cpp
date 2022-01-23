@@ -34,11 +34,13 @@ void convert_fp(string srcpath, string dstpath)
     } catch (const char* msg) {
         cerr << msg << endl;
     }
+    
 
     vector<vector<double>> data_double;
     do {
         data_double.emplace_back();
     }while (csv_reader->read_double_line(data_double.back()));
+    delete csv_reader;
 
     // the last two lines should be empty
     data_double.pop_back();
