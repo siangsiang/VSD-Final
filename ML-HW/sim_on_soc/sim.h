@@ -165,9 +165,6 @@ int inference(fixed32 in[360])
 
     fixed32 fc1_out[5];
     fc1(fc0_out, fc1_out);
-    for (int i = 0; i < 5; ++i) {
-        printf("0x%x\n", fc1_out[i]);
-    }
 
     int cls = cmp(fc1_out);
     return cls;
